@@ -7,6 +7,8 @@ Camera follows the player and does not rotate, can zooom with mouse wheel
 
 __ATTACH TO MAIN CAMERA IN DUNGEON__
 
+
+
 ### PlayerController ###
 Controllers players movement and interactions, including enemies and pickups. Creates a persistent instance of PlayerController on Awake() and only allows one instance to exist, carrying data about the player between scenes. Can be accessed from all other scripts by using `PlayerControler.player.publicFunctionOrVar`
 
@@ -16,8 +18,12 @@ __IMPORTANT:__ In order to ensure only one copy of player exists, start scene mu
 
 __ATTACH TO PLAYER IN DUNGEON__
 
+
+
 ### ItemDatabase ##
 Static script which provides an item database to all other scripts. Simply use `ItemDatabase.get(id or name)` to retreive a copy of any item in the database. Contains definition for item class. No need to attach to anything.
+
+
 
 ### CanvasController ##
 Controls the loading of data onto the canvas on the combat scene. Loads the players inventory and enemy sprite using inventory and enemy name from the persistent player object.
