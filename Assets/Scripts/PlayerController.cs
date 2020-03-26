@@ -23,20 +23,19 @@ public class PlayerController : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-
-
-    // for prototyping only -- REMOVE //
-    bool hasBody = true; // for testing the inventory set to false, movement set to true
-
     // gloablly accessable attributes
     public List<Item> inventory = new List<Item>();
-    public string currentEnemy = "";
+    public Fighter currentEnemy;
+    public int health = 100;
 
     // private vars
     int stepSize = 3;
     float moveSpeed = 10;
     bool inMotion = false;
+    Vector3 lastPosition;
     LayerMask walls;
+    bool inCombat = false;
+
 
     void Start()
     {
@@ -46,38 +45,34 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (hasBody && !inMotion) // IMPORTANT -- IF ITS NOT MOVING THIS IS WHY AND YOURE STUPID (NOTE TO SELF)
+        if (!inCombat) // IMPORTANT -- IF ITS NOT MOVING THIS IS WHY AND YOURE STUPID (NOTE TO SELF)
         {
-            // get input
-            float horizontal = Input.GetAxisRaw("Horizontal");
-            float vertical = Input.GetAxisRaw("Vertical");
-            horizontal = vertical == 0 ? horizontal : 0; // if theres movement in zDir (vert) then only move in that direction (only move in one dir at a time)
-            
-            // set player orientation
-            if (horizontal < 0)
-                transform.Rotate(0, -90 - transform.rotation.eulerAngles.y, 0);
-            if (horizontal > 0)
-                transform.Rotate(0, 90-transform.rotation.eulerAngles.y, 0);
-            if (vertical < 0)
-                transform.Rotate(0, 180 - transform.rotation.eulerAngles.y, 0);
-            if (vertical > 0)
-                transform.Rotate(0, -1 * transform.rotation.eulerAngles.y, 0);
+            if (!inMotion)
+            {
+                // get input
+                float horizontal = Input.GetAxisRaw("Horizontal");
+                float vertical = Input.GetAxisRaw("Vertical");
+                horizontal = vertical == 0 ? horizontal : 0; // if theres movement in zDir (vert) then only move in that direction (only move in one dir at a time)
 
-            // check for walls then move
-            Vector3 step = new Vector3(horizontal * stepSize, 0, vertical * stepSize);
-            Ray ray = new Ray(transform.position, step);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, stepSize, walls)) // if theres no collision (besides walkable areas) and not moving already, smoothly move
-            {
-                if (hit.collider.gameObject.tag == "Enemy")
+                // set player orientation
+                if (horizontal < 0)
+                    transform.Rotate(0, -90 - transform.rotation.eulerAngles.y, 0);
+                if (horizontal > 0)
+                    transform.Rotate(0, 90 - transform.rotation.eulerAngles.y, 0);
+                if (vertical < 0)
+                    transform.Rotate(0, 180 - transform.rotation.eulerAngles.y, 0);
+                if (vertical > 0)
+                    transform.Rotate(0, -1 * transform.rotation.eulerAngles.y, 0);
+
+                // check for walls then move
+                Vector3 step = new Vector3(horizontal * stepSize, 0, vertical * stepSize);
+                Ray ray = new Ray(transform.position, step);
+                RaycastHit hit;
+                if (!Physics.Raycast(ray, out hit, stepSize, walls)) // if theres no collision (besides walkable areas) and not moving already, smoothly move
                 {
-                    SceneManager.LoadScene(sceneName: "Combat"); // change scenes using built in methods
-                    currentEnemy = hit.collider.gameObject.name;
+                    lastPosition = transform.position;
+                    StartCoroutine(SmoothMovement(transform.position + step)); // co-routine is run in background so that graphics update while smooth moving
                 }
-            }
-            else
-            {
-                StartCoroutine(SmoothMovement(transform.position + step)); // co-routine is run in background so that graphics update while smooth moving
             }
         }
     }
@@ -86,22 +81,69 @@ public class PlayerController : MonoBehaviour
 	{
 		if (collision.gameObject.tag == "Pickup")
 		{
-			string fileName = collision.gameObject.name;
-			Destroy(collision.gameObject); // delete the pickup from the scene
-			inventory.Add(ItemDatabase.get(fileName)); // add item to persistent inventory
-		}
-
-    }
-
-
-    public void printInventory()
-    {
-        foreach (var item in inventory)
-        {
-            Debug.Log(item.name);
+			Item item = Database.getItemInstance(collision.gameObject.name);
+            Destroy(collision.gameObject); // delete the pickup from the scene
+            inventory.Add(item); // add item to persistent inventory
+            Database.itemInstances.Remove(item);
         }
+        else if (collision.gameObject.tag == "Enemy")
+        {
+            enterCombat(collision.gameObject.name);
+        }
+
     }
 
+    public void enterCombat(string enemyName)
+    {
+        inCombat = true;
+        SceneManager.LoadScene(sceneName: "Combat"); // change scenes using built in methods
+        currentEnemy = Database.getEnemyInstance(enemyName);
+    }
+
+    public void exitCombat()
+    {
+        SceneManager.LoadScene(sceneName: "Dungeon");
+        inCombat = false;
+    }
+
+    public string engageInCombat(Item elementItem, Item typeItem, Item powerItem)
+    {
+        int playerStrength = powerItem.getRandomStrength();
+        int enemyStrength = currentEnemy.getRandomStrength();
+        float coefficient = currentEnemy.getStrengthCoefficient(elementItem, typeItem, powerItem);
+        string combatText = "Enemy attacks with " + enemyStrength + " points and player ";
+        switch (typeItem.type)
+        {
+            case "heal":
+                health += playerStrength - enemyStrength;
+                combatText += "heals with " + playerStrength + " points, player heals by " + (playerStrength - enemyStrength);
+                break;
+            case "block":
+                health -= Mathf.Clamp(enemyStrength - (int)Mathf.Round((playerStrength / coefficient)), 0, enemyStrength);
+                combatText += "blocks with " + (int)Mathf.Round((playerStrength / coefficient)) + " points, enemy does " + Mathf.Clamp(enemyStrength - (int)Mathf.Round((playerStrength / coefficient)), 0, enemyStrength) + " damage to player";
+                break;
+            case "attack":
+                currentEnemy.health -= (int)Mathf.Round(coefficient * playerStrength);
+                health -= enemyStrength;
+                combatText += "attacks with " + (int)Mathf.Round(coefficient * playerStrength) + " points";
+                break;
+        }
+        if (coefficient != 1)
+        {
+            combatText += ". " + elementItem.element + " potion used on " + currentEnemy.element + " enemy resulted in x" + coefficient + " " + typeItem.type + " points";
+        }
+        return combatText;
+    }
+
+    public Item getItemFromInventory(int id)
+    {
+        return inventory.Find(item => item.id == id);
+    }
+
+    public Item getItemFromInventory(string itemName)
+    {
+        return inventory.Find(item => item.name == itemName);
+    }
 
     protected IEnumerator SmoothMovement(Vector3 end) // co-routine to update location at set moveSpeed
     {
@@ -112,5 +154,9 @@ public class PlayerController : MonoBehaviour
             yield return null; // kind of a breakpoint for the co-routine
         }
         inMotion = false; // end co-routine and end movement
+        if (inCombat) // undo move if player moved into enemy on move
+        {
+            transform.position = lastPosition;
+        }
     }
 }
