@@ -36,12 +36,21 @@ public class CanvasController : MonoBehaviour, IBeginDragHandler, IDragHandler, 
             renderer.sprite = Resources.Load("Sprites/" + item.name, typeof(Sprite)) as Sprite;
 
             // find slot to put it in and put it there
-            GameObject slotObj = GameObject.Find("Slot (" + counter + ")");
+            int slotNumber = counter;
+            for (int i = 0; i < counter; i++)
+            {
+                if (PlayerController.player.inventory[i].name == item.name)
+                {
+                    slotNumber = i + 1;
+                    break;
+                }
+            }
+            GameObject slotObj = GameObject.Find("Slot (" + slotNumber + ")");
             itemObj.transform.parent = slotObj.transform;
             itemObj.transform.position = slotObj.transform.position;
             itemObj.transform.localScale = slotObj.transform.localScale * 20;
             itemObj.tag = "Item";
-            counter++;
+            counter = slotNumber + 1;
         }
 
         // set enemy sprite
@@ -70,7 +79,7 @@ public class CanvasController : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     // for end turn buttton
     public void endTurn()
-    {;
+    {
         if ((elementSlot.transform.childCount + typeSlot.transform.childCount + powerSlot.transform.childCount) == 3)
         {
             Item elementItem = PlayerController.player.getItemFromInventory(elementSlot.transform.GetChild(0).gameObject.name);
