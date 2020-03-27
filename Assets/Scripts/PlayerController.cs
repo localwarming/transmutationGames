@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
     {
         // get components from game
         walls = LayerMask.GetMask("Walls");
+        Physics.IgnoreLayerCollision(9, 10);
     }
 
     void Update()
@@ -82,9 +83,9 @@ public class PlayerController : MonoBehaviour
 		if (collision.gameObject.tag == "Pickup")
 		{
 			Item item = Database.getItemInstance(collision.gameObject.name);
-            Destroy(collision.gameObject); // delete the pickup from the scene
-            inventory.Add(item); // add item to persistent inventory
-            Database.itemInstances.Remove(item);
+            Destroy(collision.gameObject);          // delete the pickup from the scene
+            inventory.Add(item);                    // add item to persistent inventory
+            Database.itemInstances.Remove(item);    // delete item istance
         }
         else if (collision.gameObject.tag == "Enemy")
         {
@@ -102,6 +103,7 @@ public class PlayerController : MonoBehaviour
 
     public void exitCombat()
     {
+        currentEnemy = null;
         SceneManager.LoadScene(sceneName: "Dungeon");
         inCombat = false;
     }

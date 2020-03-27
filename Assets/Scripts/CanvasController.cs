@@ -86,6 +86,16 @@ public class CanvasController : MonoBehaviour, IBeginDragHandler, IDragHandler, 
             Destroy(elementSlot.transform.GetChild(0).gameObject);
             Destroy(typeSlot.transform.GetChild(0).gameObject);
             Destroy(powerSlot.transform.GetChild(0).gameObject);
+            if (PlayerController.player.health < 1)
+            {
+                PlayerController.player.health = 100;
+                backToDungeon();
+            }
+            else if (PlayerController.player.currentEnemy.health < 1)
+            {
+                Database.enemyInstances.Remove(PlayerController.player.currentEnemy);
+                backToDungeon();
+            }
         }
         else
         {
