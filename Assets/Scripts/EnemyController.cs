@@ -28,32 +28,35 @@ public class EnemyController : MonoBehaviour
             float vNormal = (vertical != 0) ? vertical / Mathf.Abs(vertical) : 0;
             if (Vector3.Distance(transform.position, player.transform.position) < 10)
             {
-                // set player orientation
-                if (horizontal < 0)
-                    transform.Rotate(0, -90 - transform.rotation.eulerAngles.y, 0);
-                if (horizontal > 0)
-                    transform.Rotate(0, 90 - transform.rotation.eulerAngles.y, 0);
-                if (vertical < 0)
-                    transform.Rotate(0, 180 - transform.rotation.eulerAngles.y, 0);
-                if (vertical > 0)
-                    transform.Rotate(0, -1 * transform.rotation.eulerAngles.y, 0);
-
                 // check for walls then move
                 Vector3 step1 = (Mathf.Abs(horizontal) > Mathf.Abs(vertical)) ? new Vector3(hNormal * stepSize, 0, 0) : new Vector3(0, 0, vNormal * stepSize);
                 Vector3 step2 = (step1.x == 0) ? new Vector3(hNormal * stepSize, 0, 0) : new Vector3(0, 0, vNormal * stepSize);
+                Vector3 step = new Vector3(0, 0, 0);
                 Ray ray1 = new Ray(transform.position, step1);
                 Ray ray2 = new Ray(transform.position, step2);
                 RaycastHit hit;
                 if (!Physics.Raycast(ray1, out hit, stepSize, walls)) // if theres no collision (besides walkable areas) and not moving already, smoothly move
                 {
+                    step = step1;
                     lastPosition = transform.position;
                     StartCoroutine(SmoothMovement(transform.position + step1)); // co-routine is run in background so that graphics update while smooth moving
                 }
                 else if (!Physics.Raycast(ray2, out hit, stepSize, walls))
                 {
+                    step = step2;
                     lastPosition = transform.position;
                     StartCoroutine(SmoothMovement(transform.position + step2));
                 }
+
+                // set enemy orientation
+                if (step.x < 0)
+                    transform.Rotate(0, 180 - transform.rotation.eulerAngles.y, 0);
+                if (step.x > 0)
+                    transform.Rotate(0, -1 * transform.rotation.eulerAngles.y, 0);
+                if (step.z < 0)
+                    transform.Rotate(0, 90 - transform.rotation.eulerAngles.y, 0);
+                if (step.z > 0)
+                    transform.Rotate(0, -90 - transform.rotation.eulerAngles.y, 0);
             }
         }
     }

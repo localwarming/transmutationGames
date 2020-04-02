@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
         DontDestroyOnLoad(this);
 
         // for combat scene debugging
+        /*
         inventory.Add(Database.getItemInstance(0));
         inventory.Add(Database.getItemInstance(0));
         inventory.Add(Database.getItemInstance(0));
@@ -51,7 +52,7 @@ public class PlayerController : MonoBehaviour
         inventory.Add(Database.getItemInstance(4));
         inventory.Add(Database.getItemInstance(4));
         inventory.Add(Database.getItemInstance(4));
-        currentEnemy = Database.getEnemyInstance(0);
+        currentEnemy = Database.getEnemyInstance(0);*/
     }
 
     void Start()

@@ -75,7 +75,7 @@ public class CanvasController : MonoBehaviour
     {
         if (readerSlot.transform.childCount > 0)
         {
-            Item readme = Database.getItemInstance(readerSlot.transform.GetChild(0).name);
+            Item readme = PlayerController.player.inventory.Find(item => item.name == readerSlot.transform.GetChild(0).name);
             readerText.text = readme.element + " - " + readme.type + " - " + readme.strength;
         } 
         else
