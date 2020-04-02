@@ -19,17 +19,19 @@ public class MagicElement
     public string element;      // all magical elements have an element
     public string meshPath;     // path to mesh for rendering
     public string matPath;      // path to material
+    public string spritePath;   // path to sprite
     public string name;         // gameObject name
     public string strength;     // weak, medium, or strong
     public Vector3 position;    // persistent position
     public int id;              // unique id for if its ever needed
 
-    public MagicElement(int[,] _strengthArray, string _element, string _meshPath, string _matPath)
+    public MagicElement(int[,] _strengthArray, string _element, string _meshPath, string _matPath, string _spritePath)
     {
         strengthArray = _strengthArray;
         element = _element;
         meshPath = _meshPath;
         matPath = _matPath;
+        spritePath = _spritePath;
     }
     public MagicElement(MagicElement copy)
     {
@@ -37,6 +39,7 @@ public class MagicElement
         element = copy.element;
         meshPath = copy.meshPath;
         matPath = copy.matPath;
+        spritePath = copy.spritePath;
     }
 }
 
@@ -154,11 +157,11 @@ public static class Database
         // then storing it in an instantiated items list
         // this list is used to render all persistent items spawned in the level
         //[minStrength,max]for weak     medium    strong     type                     meshPath                                       matPath
-        new MagicElement(new int[,] {{10, 12}, {20, 25}, {48, 55}}, "water", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point"),
-        new MagicElement(new int[,] {{5, 8}, {15, 18}, {30, 38}}, "earth", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point"),
-        new MagicElement(new int[,] {{3, 10}, {12, 20}, {28, 45}}, "fire", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point"),
-        new MagicElement(new int[,] {{8, 15}, {18, 30}, {40, 80}}, "plant", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point"),
-        new MagicElement(new int[,] {{5, 8}, {15, 25}, {30, 50}}, "ice", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point")
+        new MagicElement(new int[,] {{10, 12}, {20, 25}, {48, 55}}, "water", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Blue Potion"),
+        new MagicElement(new int[,] {{5, 8}, {15, 18}, {30, 38}}, "earth", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Yellow Potion"),
+        new MagicElement(new int[,] {{3, 10}, {12, 20}, {28, 45}}, "fire", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Red Potion"),
+        new MagicElement(new int[,] {{8, 15}, {18, 30}, {40, 80}}, "plant", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Green Potion"),
+        new MagicElement(new int[,] {{5, 8}, {15, 25}, {30, 50}}, "ice", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Violet Potion")
     };
     public static MagicElement getItemTemplate(string element)
     {
@@ -231,11 +234,11 @@ public static class Database
     // if something doesnt make sense look at the items part above, its more commented
     public static List<MagicElement> enemyTemplates = new List<MagicElement>()
     {
-        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "water", "Meshes/Monsters/Slime/slime_monster_mesh", "Meshes/Monsters/Slime/Water Texture/Slime Water"),
-        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "earth", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Earth Texture/Spider Earth"),
-        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "fire", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Fire Texture/Spider Fire"),
-        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "plant", "Meshes/Monsters/Slime/slime_monster_mesh", "Meshes/Monsters/Slime/Plant Texture/Slime Plant"),
-        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 12} }, "ice", "Meshes/Monsters/Rocky/rocky_monster_mesh", "Meshes/Monsters/Rocky/Ice/Rocky_Ice")
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "water", "Meshes/Monsters/Slime/slime_monster_mesh", "Meshes/Monsters/Slime/Water Texture/Slime Water", "Sprites/Enemies/Water Slime"),
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "earth", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Earth Texture/Spider Earth", "Sprites/Enemies/Earth Spider"),
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "fire", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Fire Texture/Spider Fire", "Sprites/Enemies/Fire Spider"),
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "plant", "Meshes/Monsters/Slime/slime_monster_mesh", "Meshes/Monsters/Slime/Plant Texture/Slime Plant", "Sprites/Enemies/Plant Slime"),
+        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 12} }, "ice", "Meshes/Monsters/Rocky/rocky_monster_mesh", "Meshes/Monsters/Rocky/Ice/Rocky_Ice", "Sprites/Enemies/Ghost2")
     };
     public static MagicElement getEnemyTemplate(string element)
     {

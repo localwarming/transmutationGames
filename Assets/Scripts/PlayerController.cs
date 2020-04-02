@@ -42,6 +42,24 @@ public class PlayerController : MonoBehaviour
         // get components from game
         walls = LayerMask.GetMask("Walls");
         Physics.IgnoreLayerCollision(9, 10);
+
+        // for combat scene debugging
+        inventory.Add(Database.getItemInstance(0));
+        inventory.Add(Database.getItemInstance(0));
+        inventory.Add(Database.getItemInstance(0));
+        inventory.Add(Database.getItemInstance(1));
+        inventory.Add(Database.getItemInstance(1));
+        inventory.Add(Database.getItemInstance(1));
+        inventory.Add(Database.getItemInstance(2));
+        inventory.Add(Database.getItemInstance(2));
+        inventory.Add(Database.getItemInstance(2));
+        inventory.Add(Database.getItemInstance(3));
+        inventory.Add(Database.getItemInstance(3));
+        inventory.Add(Database.getItemInstance(3));
+        inventory.Add(Database.getItemInstance(4));
+        inventory.Add(Database.getItemInstance(4));
+        inventory.Add(Database.getItemInstance(4));
+        currentEnemy = Database.getEnemyInstance(0);
     }
 
     void Update()

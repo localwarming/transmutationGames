@@ -5,9 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEngine.EventSystems;
 
-public class CanvasController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class CanvasController : MonoBehaviour
 {
     // drag 'n drop vars
     GameObject dragItem;
@@ -27,36 +26,39 @@ public class CanvasController : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     {
         // fill slots with players items
         int counter = 1;
+        int stacked = 0;
         foreach (Item item in PlayerController.player.inventory)
         {
             // make new object and add correct image
             GameObject itemObj = new GameObject(item.name);
-            itemObj.AddComponent<SpriteRenderer>();
-            SpriteRenderer renderer = itemObj.GetComponent<SpriteRenderer>();
-            renderer.sprite = Resources.Load("Sprites/" + item.name, typeof(Sprite)) as Sprite;
+            itemObj.AddComponent<Image>();
+            itemObj.AddComponent<CanvasGroup>();
+            itemObj.AddComponent<DragHandler>();
+            itemObj.GetComponent<Image>().sprite = Resources.Load(item.spritePath, typeof(Sprite)) as Sprite;
 
             // find slot to put it in and put it there
-            int slotNumber = counter;
-            for (int i = 0; i < counter; i++)
+            // uncomment for item stacking (doesnt work yet)
+            /*for (int i = 0; i < counter - 1; i++)
             {
                 if (PlayerController.player.inventory[i].name == item.name)
                 {
-                    slotNumber = i + 1;
+                    stacked++;
                     break;
                 }
-            }
+            }*/
+            int slotNumber = counter - stacked;
             GameObject slotObj = GameObject.Find("Slot (" + slotNumber + ")");
             itemObj.transform.parent = slotObj.transform;
             itemObj.transform.position = slotObj.transform.position;
-            itemObj.transform.localScale = slotObj.transform.localScale * 20;
+            itemObj.transform.localScale = slotObj.transform.localScale * 1.3f;
             itemObj.tag = "Item";
-            counter = slotNumber + 1;
+            counter++;
         }
 
         // set enemy sprite
         GameObject enemy = GameObject.Find("Enemy");
         RawImage image = enemy.GetComponent<RawImage>();
-        Texture newImage = Resources.Load<Texture2D>("Sprites/" + PlayerController.player.currentEnemy.name);
+        Texture newImage = Resources.Load<Texture2D>(PlayerController.player.currentEnemy.spritePath);
         image.texture = newImage;
 
         // get combat displays
@@ -109,56 +111,6 @@ public class CanvasController : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         else
         {
             combatText.text = "please fill all slots";
-        }
-    }
-
-    // drag n drop stuff
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        if (eventData.pointerEnter.transform.GetChild(0).gameObject.tag == "Item")
-        {
-            dragItem = eventData.pointerEnter.transform.GetChild(0).gameObject;
-            dragItemPos = eventData.pointerEnter.transform.position;
-            dragging = true;
-        }
-    }
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (dragging)
-        {
-            Plane plane = new Plane(Vector3.forward, dragItemPos);
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            float distance;
-            if (plane.Raycast(ray, out distance))
-            {
-                var pos = ray.GetPoint(distance);
-                dragItem.transform.position = pos;
-            }
-        }
-    }
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        if (dragging)
-        {
-            if (eventData.hovered.Count > 0)
-            {
-                if (eventData.pointerCurrentRaycast.gameObject.tag == "AttackSlots" || (eventData.pointerCurrentRaycast.gameObject.tag == "InventorySlots" && eventData.pointerCurrentRaycast.gameObject.transform.childCount == 0))
-                {
-                    dragItem.transform.parent = eventData.pointerCurrentRaycast.gameObject.transform;
-                    dragItem.transform.position = eventData.pointerCurrentRaycast.gameObject.transform.position;
-                    dragItem.transform.localScale = eventData.pointerCurrentRaycast.gameObject.transform.localScale * 20;
-                }
-                else
-                {
-                    dragItem.transform.position = dragItemPos;
-                }
-            }
-            else
-            {
-                dragItem.transform.position = dragItemPos;
-            }
-            dragItem = null;
-            dragging = false;
         }
     }
 }
