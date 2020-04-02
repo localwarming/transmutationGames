@@ -22,10 +22,9 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         for (int i = 0; i < eventData.hovered.Count; i++)
         {
-            Debug.Log(eventData.hovered[i]);
             if ((eventData.hovered[i].gameObject.tag == "InventorySlots" || eventData.hovered[i].gameObject.tag == "AttackSlots") && eventData.hovered[i].gameObject.transform.childCount == 0)
             {
-                transform.parent = eventData.hovered[i].gameObject.transform;
+                transform.SetParent(eventData.hovered[i].gameObject.transform);
                 transform.position = eventData.hovered[i].gameObject.transform.position;
                 GetComponent<CanvasGroup>().blocksRaycasts = true;
                 if (eventData.hovered[i].gameObject.name == "ElementSlot")

@@ -8,19 +8,15 @@ using UnityEngine.SceneManagement;
 
 public class CanvasController : MonoBehaviour
 {
-    // drag 'n drop vars
-    GameObject dragItem;
-    Vector3 dragItemPos;
-    Vector3 mouseStartPos;
-    bool dragging;
-
     // combat vars
     GameObject elementSlot;
     GameObject typeSlot;
     GameObject powerSlot;
+    GameObject readerSlot;
     Text playerHealthDisplay;
     Text enemyHealthDisplay;
     Text combatText;
+    Text readerText;
 
     void Start()
     {
@@ -48,7 +44,7 @@ public class CanvasController : MonoBehaviour
             }*/
             int slotNumber = counter - stacked;
             GameObject slotObj = GameObject.Find("Slot (" + slotNumber + ")");
-            itemObj.transform.parent = slotObj.transform;
+            itemObj.transform.SetParent(slotObj.transform);
             itemObj.transform.position = slotObj.transform.position;
             itemObj.transform.localScale = slotObj.transform.localScale * 1.3f;
             itemObj.tag = "Item";
@@ -56,21 +52,36 @@ public class CanvasController : MonoBehaviour
         }
 
         // set enemy sprite
-        GameObject enemy = GameObject.Find("Enemy");
+        GameObject enemy = GameObject.Find("/Canvas/Panel/Enemy/EnemyImage");
         RawImage image = enemy.GetComponent<RawImage>();
         Texture newImage = Resources.Load<Texture2D>(PlayerController.player.currentEnemy.spritePath);
         image.texture = newImage;
 
         // get combat displays
-        playerHealthDisplay = GameObject.Find("PlayerHealth").GetComponent<Text>();
-        enemyHealthDisplay = GameObject.Find("EnemyHealth").GetComponent<Text>();
-        combatText = GameObject.Find("CombatText").GetComponent<Text>();
+        playerHealthDisplay = GameObject.Find("/Canvas/PlayerHealth").GetComponent<Text>();
+        enemyHealthDisplay = GameObject.Find("/Canvas/EnemyHealth").GetComponent<Text>();
+        combatText = GameObject.Find("/Canvas/CombatText").GetComponent<Text>();
+        readerText = GameObject.Find("/Canvas/ReaderText").GetComponent<Text>();
         playerHealthDisplay.text = PlayerController.player.health.ToString();
         enemyHealthDisplay.text = PlayerController.player.currentEnemy.health.ToString();
 
-        elementSlot = GameObject.Find("ElementSlot");
-        typeSlot = GameObject.Find("TypeSlot");
-        powerSlot = GameObject.Find("PowerSlot");
+        elementSlot = GameObject.Find("/Canvas/AttackSlots/ElementSlot");
+        typeSlot = GameObject.Find("/Canvas/AttackSlots/TypeSlot");
+        powerSlot = GameObject.Find("/Canvas/AttackSlots/PowerSlot");
+        readerSlot = GameObject.Find("/Canvas/ReaderSlot");
+    }
+
+    void Update()
+    {
+        if (readerSlot.transform.childCount > 0)
+        {
+            Item readme = Database.getItemInstance(readerSlot.transform.GetChild(0).name);
+            readerText.text = readme.element + " - " + readme.type + " - " + readme.strength;
+        } 
+        else
+        {
+            readerText.text = "";
+        }
     }
 
     // function for button to use to go back to dungeon

@@ -9,20 +9,6 @@ public class PlayerController : MonoBehaviour
     // singleton persistent instance of player
     public static PlayerController player;
 
-    // create singleton instance of PlayerController class
-    void Awake()
-    {
-        if (player != null)
-        {
-            GameObject.Destroy(gameObject);
-        }
-        else
-        {
-            player = this;
-        }
-        DontDestroyOnLoad(this);
-    }
-
     // gloablly accessable attributes
     public List<Item> inventory = new List<Item>();
     public Fighter currentEnemy;
@@ -36,12 +22,18 @@ public class PlayerController : MonoBehaviour
     LayerMask walls;
     bool inCombat = false;
 
-
-    void Start()
+    // create singleton instance of PlayerController class
+    void Awake()
     {
-        // get components from game
-        walls = LayerMask.GetMask("Walls");
-        Physics.IgnoreLayerCollision(9, 10);
+        if (player != null)
+        {
+            GameObject.Destroy(gameObject);
+        }
+        else
+        {
+            player = this;
+        }
+        DontDestroyOnLoad(this);
 
         // for combat scene debugging
         inventory.Add(Database.getItemInstance(0));
@@ -60,6 +52,13 @@ public class PlayerController : MonoBehaviour
         inventory.Add(Database.getItemInstance(4));
         inventory.Add(Database.getItemInstance(4));
         currentEnemy = Database.getEnemyInstance(0);
+    }
+
+    void Start()
+    {
+        // get components from game
+        walls = LayerMask.GetMask("Walls");
+        Physics.IgnoreLayerCollision(9, 10);
     }
 
     void Update()
