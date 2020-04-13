@@ -276,7 +276,7 @@ public static class Database
             enemyObj.AddComponent<BoxCollider>();
             enemyObj.AddComponent<MeshRenderer>();
             enemyObj.AddComponent<MeshFilter>();
-            enemyObj.AddComponent<EnemyController>();
+            //enemyObj.AddComponent<EnemyController>();
             enemyObj.transform.localScale = new Vector3(.01F, .01F, .01F);
             enemyObj.GetComponent<Rigidbody>().useGravity = false;
             enemyObj.GetComponent<Rigidbody>().isKinematic = false;

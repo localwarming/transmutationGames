@@ -9,6 +9,7 @@ TagManager:
   - AttackSlots
   - Item
   - InventorySlots
+  - Floor
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Walls
   - Pickups
   - Enemies
-  - 
+  - Tiles
   - 
   - 
   - 

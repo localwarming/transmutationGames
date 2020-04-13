@@ -84,14 +84,14 @@ public class PlayerController : MonoBehaviour
                     transform.Rotate(0, -1 * transform.rotation.eulerAngles.y, 0);
 
                 // check for walls then move
-                Vector3 step = new Vector3(horizontal * stepSize, 0, vertical * stepSize);
+                /*Vector3 step = new Vector3(horizontal * stepSize, 0, vertical * stepSize);
                 Ray ray = new Ray(transform.position, step);
                 RaycastHit hit;
                 if (!Physics.Raycast(ray, out hit, stepSize, walls)) // if theres no collision (besides walkable areas) and not moving already, smoothly move
                 {
                     lastPosition = transform.position;
                     StartCoroutine(SmoothMovement(transform.position + step)); // co-routine is run in background so that graphics update while smooth moving
-                }
+                }*/
             }
         }
     }
