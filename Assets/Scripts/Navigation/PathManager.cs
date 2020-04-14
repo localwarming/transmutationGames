@@ -21,7 +21,8 @@ public class PathManager : MonoBehaviour
     {
         if(isPlayerTurn == false)
         {
-            foreach(GameObject enemy in enemies)
+            enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+            foreach (GameObject enemy in enemies)
             {
                 enemy.GetComponent<EnemyMovement>().MarkPath();
             }

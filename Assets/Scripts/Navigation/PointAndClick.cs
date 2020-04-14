@@ -32,6 +32,7 @@ namespace Pathfinding
 
         private void Start()
         {
+            ai = GetComponent<IAstarAI>();
             player = GameObject.Find("Player");
             floorLayer = player.GetComponent<PlayerMovement>().floorLayer;
             
@@ -52,11 +53,40 @@ namespace Pathfinding
             if (ai != null) ai.onSearchPath -= Update;
         }
 
+        GameObject selectedobject;
+        public Color baseColor;
+
+        private void OnMouseExit()
+        {
+            if (selectedobject != null)
+            {
+                selectedobject.GetComponent<Renderer>().material.color = baseColor;
+            }
+        }
+
+        private void OnMouseOver()
+        {
+            RaycastHit hitInfo;
+            bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity, floorLayer);
+            if (hit != false)
+            {
+                selectedobject = hitInfo.collider.gameObject;
+                baseColor = selectedobject.GetComponent<Renderer>().material.color;
+                selectedobject.GetComponent<Renderer>().material.color = new Color(122, 122, 122);
+            }
+        }
+
+        
+
         /// <summary>Updates the AI's destination every frame</summary>
         void Update()
         {
             // _lastCompletedPath = GetComponent<Seeker>().lastCompletedVectorPath;
-            _path = GetComponent<AIPath>().path;
+            if (pathCalculated())
+            {
+                _path = GetComponent<AIPath>().path;
+            }
+            
             if(_path != null && ai.destination != Vector3.positiveInfinity) vectorPoints = _path.vectorPath;
             //if (target != null && ai != null) ai.destination = new Vector3(target.position.x, transform.position.y, target.position.z);
 

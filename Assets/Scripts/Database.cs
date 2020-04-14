@@ -185,12 +185,12 @@ public static class Database
         // can be hardcoded (as is now) or dynamic in the future
         // (i.e. for making a dungeon have more strong items)
         //                      element   id      name         type   strength     position      
-        new Item(getItemTemplate("water"), 0, "Blue Potion", "attack", "strong", itemPositions[0]),
+        /*new Item(getItemTemplate("water"), 0, "Blue Potion", "attack", "strong", itemPositions[0]),
         new Item(getItemTemplate("plant"), 1, "Green Potion", "attack", "strong", itemPositions[1]),
         new Item(getItemTemplate("fire"),  2, "Red Potion", "attack", "strong", itemPositions[2]),
         new Item(getItemTemplate("plant"), 3, "Green Potion", "attack", "strong", itemPositions[3]),
         new Item(getItemTemplate("fire"),  4, "Red Potion", "attack", "strong", itemPositions[4]),
-        new Item(getItemTemplate("plant"), 5, "Green Potion", "attack", "strong", itemPositions[5])
+        new Item(getItemTemplate("plant"), 5, "Green Potion", "attack", "strong", itemPositions[5])*/
     };
     public static Item getItemInstance(int id)
     {
@@ -277,6 +277,7 @@ public static class Database
             enemyObj.AddComponent<MeshRenderer>();
             enemyObj.AddComponent<MeshFilter>();
             //enemyObj.AddComponent<EnemyController>();
+            enemyObj.AddComponent<EnemyMovement>();
             enemyObj.transform.localScale = new Vector3(.01F, .01F, .01F);
             enemyObj.GetComponent<Rigidbody>().useGravity = false;
             enemyObj.GetComponent<Rigidbody>().isKinematic = false;

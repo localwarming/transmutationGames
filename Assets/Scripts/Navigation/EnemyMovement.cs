@@ -9,9 +9,10 @@ public class EnemyMovement : Movement
     private int moveDistance = 3;
     private GameObject playerObject;
     private GameObject desiredSpot;
-    bool playerNear = false;
-    public int movementSpeed = 1;
+    public bool playerNear = false;
+    public int movementSpeed = 2;
     private int _movementSpeed;
+    private BoxCollider detection;
 
 
     // Debug Variables
@@ -27,22 +28,30 @@ public class EnemyMovement : Movement
         pathchecker.layer = 8; 
         pathchecker.AddComponent<BoxCollider>().enabled = false;
         _movementSpeed = movementSpeed;
+
+        detection = gameObject.AddComponent<BoxCollider>();
+        detection.isTrigger = true;
+        detection.size = new Vector3(1400, 100, 1400);
+        blockingLayer = 8;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name == "Player")
+        if (other.name == "Player" || other.tag == "Player")
         {
+            Debug.Log(gameObject.name + " Detected " + other.name);
             RaycastHit hitLinear;
             Physics.Raycast(transform.position, other.transform.position - transform.position, out hitLinear);
-            if (hitLinear.collider.name == "Player")
-                Debug.Log("Player is Near");
+            //Debug.DrawRay(transform.position, other.transform.position - transform.position, Color.red);
+            /*if (hitLinear.collider.name == "Player")
+                Debug.Log("Player is Near");*/
             playerNear = true;
-            playerObject = hitLinear.collider.gameObject;
+            playerObject = other.gameObject;
         }
     }
     private void OnTriggerExit(Collider other)
     {
+        Debug.Log(gameObject.name + " Lost " + other.name);
         playerNear = false;
     }
 
@@ -80,7 +89,7 @@ public class EnemyMovement : Movement
         desiredSpot.AddComponent<BoxCollider>().enabled = false;
         if (playerNear == true )
         {
-
+            Debug.Log("Moving Towards Player");
             /*
             Steps:
             1. Mark the sqaure where the enemy wants to move. (Just one space.)

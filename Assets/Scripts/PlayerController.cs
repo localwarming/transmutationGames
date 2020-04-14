@@ -104,6 +104,7 @@ public class PlayerController : MonoBehaviour
             Destroy(collision.gameObject);          // delete the pickup from the scene
             inventory.Add(item);                    // add item to persistent inventory
             Database.itemInstances.Remove(item);    // delete item istance
+            Debug.Log(this.name + ": Picked up " + collision.gameObject.name);
         }
         else if (collision.gameObject.tag == "Enemy")
         {

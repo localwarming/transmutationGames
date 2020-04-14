@@ -100,25 +100,7 @@ public class PlayerMovement : Movement
         #endregion
     }
 
-    GameObject selectedobject;
-    private void OnMouseOver()
-    {
-        RaycastHit hitInfo;
-        bool hit = Physics.Raycast(dungeonCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity, floorLayer);
-        if(hit != false)
-        {
-            selectedobject = hitInfo.collider.gameObject;
-            selectedobject.GetComponent<Renderer>().material.color = new Color(255, 255, 255);
-        }
-    }
-
-    private void OnMouseExit()
-    {
-        if(selectedobject != null)
-        {
-            selectedobject.GetComponent<Renderer>().material.color = new Color(0, 0, 0);
-        }
-    }
+    
 
     public void AutoMove(int xDir, int zDir) //Remove the List<> if not used
     {
