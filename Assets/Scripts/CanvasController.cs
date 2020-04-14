@@ -17,6 +17,11 @@ public class CanvasController : MonoBehaviour
     Text enemyHealthDisplay;
     Text combatText;
     Text readerText;
+    Text updateTextElement;
+    Text updateTextType;
+    Text updateTextStrength;
+    Text readerTextCaption;
+    Text effectCaption;
 
     void Start()
     {
@@ -62,6 +67,11 @@ public class CanvasController : MonoBehaviour
         enemyHealthDisplay = GameObject.Find("/Canvas/EnemyHealth").GetComponent<Text>();
         combatText = GameObject.Find("/Canvas/CombatText").GetComponent<Text>();
         readerText = GameObject.Find("/Canvas/ReaderText").GetComponent<Text>();
+        updateTextElement = GameObject.Find("/Canvas/updateTextElement").GetComponent<Text>();
+        updateTextType = GameObject.Find("/Canvas/updateTextType").GetComponent<Text>();
+        updateTextStrength = GameObject.Find("/Canvas/updateTextStrength").GetComponent<Text>();
+        readerTextCaption = GameObject.Find("/Canvas/ReaderTextCaption").GetComponent<Text>();
+        effectCaption = GameObject.Find("/Canvas/EffectCaption").GetComponent<Text>();
         playerHealthDisplay.text = PlayerController.player.health.ToString();
         enemyHealthDisplay.text = PlayerController.player.currentEnemy.health.ToString();
 
@@ -77,10 +87,54 @@ public class CanvasController : MonoBehaviour
         {
             Item readme = PlayerController.player.inventory.Find(item => item.name == readerSlot.transform.GetChild(0).name);
             readerText.text = readme.element + " - " + readme.type + " - " + readme.strength;
+            readerTextCaption.text = "Item's Tags:";
         } 
         else
         {
             readerText.text = "";
+            readerTextCaption.text = "";
+        }
+
+        //Update Equation Element Text
+        if (elementSlot.transform.childCount > 0)
+        {
+            Item element = PlayerController.player.inventory.Find(item => item.name == elementSlot.transform.GetChild(0).name);
+            updateTextElement.text = "" + element.element;
+        }
+        else
+        {
+            updateTextElement.text = "";
+        }
+
+        //Update Equation Type Text
+        if (typeSlot.transform.childCount > 0)
+        {
+            Item type = PlayerController.player.inventory.Find(item => item.name == typeSlot.transform.GetChild(0).name);
+            updateTextType.text = "" + type.type;
+        }
+        else
+        {
+            updateTextType.text = "";
+        }
+
+        //Update Equation Strength Text
+        if (powerSlot.transform.childCount > 0)
+        {
+            Item strength = PlayerController.player.inventory.Find(item => item.name == powerSlot.transform.GetChild(0).name);
+            updateTextStrength.text = "" + strength.strength;
+        }
+        else
+        {
+            updateTextStrength.text = "";
+        }
+
+        if(powerSlot.transform.childCount > 0 || typeSlot.transform.childCount > 0 || elementSlot.transform.childCount > 0)
+        {
+            effectCaption.text = "Creating Effect With Properties:";
+        }
+        else
+        {
+            effectCaption.text = "";
         }
     }
 

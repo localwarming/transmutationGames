@@ -176,7 +176,26 @@ public static class Database
         new Vector3(28, -1.6F, -19),
         new Vector3(25, -1.6F, -22),
         new Vector3(25, -1.6F, -16),
-        new Vector3(31, -1.6F, -19)
+        new Vector3(31, -1.6F, -19),
+        new Vector3(22, -1.6F, -16),
+        new Vector3(22, -1.6F, -13),
+        new Vector3(19, -1.6F, -13),
+        new Vector3(16, -1.6F, -10),
+        new Vector3(16, -1.6F, -16),
+        new Vector3(4, -1.6F, -7),
+        new Vector3(4, -1.6F, -19),
+        new Vector3(4, -1.6F, 8),
+        new Vector3(1, -1.6F, 8),
+        new Vector3(4, -1.6F, 11),
+        new Vector3(16, -1.6F, 11),
+        new Vector3(16, -1.6F, 2),
+        new Vector3(28, -1.6F, 2),
+        new Vector3(28, -1.6F, -7),
+        new Vector3(31, -1.6F, 5),
+        new Vector3(34, -1.6F, 8),
+        new Vector3(34, -1.6F, 14),
+        new Vector3(34, -1.6F, -13),
+        new Vector3(49, -1.6F, -22),
     };
     public static List<Item> itemInstances = new List<Item>()
     {   
@@ -190,7 +209,26 @@ public static class Database
         new Item(getItemTemplate("fire"),  2, "Red Potion", "attack", "strong", itemPositions[2]),
         new Item(getItemTemplate("plant"), 3, "Green Potion", "attack", "strong", itemPositions[3]),
         new Item(getItemTemplate("fire"),  4, "Red Potion", "attack", "strong", itemPositions[4]),
-        new Item(getItemTemplate("plant"), 5, "Green Potion", "attack", "strong", itemPositions[5])
+        new Item(getItemTemplate("plant"), 5, "Green Potion", "attack", "strong", itemPositions[5]),
+        new Item(getItemTemplate("ice"), 6, "Violet Potion", "attack", "strong", itemPositions[6]),
+        new Item(getItemTemplate("ice"), 7, "Violet Potion", "attack", "strong", itemPositions[7]),
+        new Item(getItemTemplate("fire"), 8, "Red Potion", "attack", "strong", itemPositions[8]),
+        new Item(getItemTemplate("plant"), 9, "Green Potion", "attack", "strong", itemPositions[9]),
+        new Item(getItemTemplate("plant"), 10, "Green Potion", "attack", "strong", itemPositions[10]),
+        new Item(getItemTemplate("water"), 11, "Blue Potion", "attack", "strong", itemPositions[11]),
+        new Item(getItemTemplate("water"), 12, "Blue Potion", "attack", "strong", itemPositions[12]),
+        new Item(getItemTemplate("fire"), 13, "Red Potion", "attack", "strong", itemPositions[13]),
+        new Item(getItemTemplate("fire"), 14, "Red Potion", "attack", "strong", itemPositions[14]),
+        new Item(getItemTemplate("earth"), 15, "Yellow Potion", "attack", "strong", itemPositions[15]),
+        new Item(getItemTemplate("earth"), 16, "Yellow Potion", "attack", "strong", itemPositions[16]),
+        new Item(getItemTemplate("water"), 17, "Blue Potion", "attack", "strong", itemPositions[17]),
+        new Item(getItemTemplate("plant"), 18, "Green Potion", "attack", "strong", itemPositions[18]),
+        new Item(getItemTemplate("ice"), 19, "Violet Potion", "attack", "strong", itemPositions[19]),
+        new Item(getItemTemplate("earth"), 20, "Yellow Potion", "attack", "strong", itemPositions[20]),
+        new Item(getItemTemplate("earth"), 21, "Yellow Potion", "attack", "strong", itemPositions[21]),
+        new Item(getItemTemplate("fire"), 22, "Red Potion", "attack", "strong", itemPositions[22]),
+        new Item(getItemTemplate("water"), 23, "Blue Potion", "attack", "strong", itemPositions[23]),
+        new Item(getItemTemplate("water"), 24, "Blue Potion", "attack", "strong", itemPositions[24]),
     };
     public static Item getItemInstance(int id)
     {
@@ -204,6 +242,16 @@ public static class Database
 
     public static void dropItems()
     {
+        //Create items.
+        itemPositions = camera.GetComponent<DungeonGenerator>().itemArray;
+        itemInstances.Clear();
+        itemInstances.Add(new Item(getItemTemplate("water"), 0, "Blue Potion", "attack", "strong", itemPositions[0]));
+        itemInstances.Add(new Item(getItemTemplate("plant"), 1, "Green Potion", "attack", "strong", itemPositions[1]));
+        itemInstances.Add(new Item(getItemTemplate("fire"), 2, "Red Potion", "attack", "strong", itemPositions[2]));
+        itemInstances.Add(new Item(getItemTemplate("plant"), 3, "Green Potion", "attack", "strong", itemPositions[3]));
+        itemInstances.Add(new Item(getItemTemplate("fire"), 4, "Red Potion", "attack", "strong", itemPositions[4]));
+        //itemInstances.Add(new Item(getItemTemplate("plant"), 5, "Green Potion", "attack", "strong", itemPositions[5]));
+
         // function to spawn all items
         foreach (var item in itemInstances)
         {
@@ -238,23 +286,32 @@ public static class Database
         new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "earth", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Earth Texture/Spider Earth", "Sprites/Enemies/Earth Spider"),
         new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "fire", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Fire Texture/Spider Fire", "Sprites/Enemies/Fire Spider"),
         new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "plant", "Meshes/Monsters/Slime/slime_monster_mesh", "Meshes/Monsters/Slime/Plant Texture/Slime Plant", "Sprites/Enemies/Plant Slime"),
-        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 12} }, "ice", "Meshes/Monsters/Rocky/rocky_monster_mesh", "Meshes/Monsters/Rocky/Ice/Rocky_Ice", "Sprites/Enemies/Ghost2")
+        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 12} }, "ice", "Meshes/Monsters/Rocky/rocky_monster_mesh", "Meshes/Monsters/Rocky/Ice/Rocky_Ice", "Sprites/Enemies/Ice Golem")
     };
     public static MagicElement getEnemyTemplate(string element)
     {
         return enemyTemplates.Find(Fighter => Fighter.element == element);
     }
+
+    private static GameObject camera = GameObject.Find("Main Camera");
     public static List<Vector3> enemyPositions = new List<Vector3>()
     {
         new Vector3(37, -1.3F, -16),
         new Vector3(10, -1.3F, -13),
-        new Vector3(10, -1.3F, 11)
+        new Vector3(10, -1.3F, 11),
+        new Vector3(22, -1.3F, 20),
+        new Vector3(37, -1.3F, 11),
     };
+
     public static List<Fighter> enemyInstances = new List<Fighter>()
     {
-        new Fighter(getEnemyTemplate("water"), 0, 100, "Water Slime", "medium", enemyPositions[0])//,
-        //new Fighter(getEnemyTemplate("plant"), 1, 100, "Plant Slime", "medium", enemyPositions[1]),
-        //new Fighter(getEnemyTemplate("fire"), 2, 100, "Fire Spider", "medium", enemyPositions[2])
+        /*
+        new Fighter(getEnemyTemplate("water"), 0, 100, "Water Slime", "weak", enemyPositions[0]),
+        new Fighter(getEnemyTemplate("plant"), 1, 100, "Plant Slime", "medium", enemyPositions[1]),
+        new Fighter(getEnemyTemplate("fire"), 2, 100, "Fire Spider", "medium", enemyPositions[2]),
+        new Fighter(getEnemyTemplate("ice"), 2, 100, "Ice Golem", "medium", enemyPositions[3]),
+        new Fighter(getEnemyTemplate("earth"), 2, 100, "Earth Spider", "medium", enemyPositions[4])
+        */
     };
     public static Fighter getEnemyInstance(int id)
     {
@@ -268,6 +325,16 @@ public static class Database
 
     public static void dropEnemies()
     {
+        //Create Enemies
+        
+        enemyPositions = camera.GetComponent<DungeonGenerator>().monsterArray;
+        Debug.Log(enemyPositions.Count);
+        enemyInstances.Add(new Fighter(getEnemyTemplate("water"), 0, 100, "Water Slime", "weak", enemyPositions[0]));
+        enemyInstances.Add(new Fighter(getEnemyTemplate("plant"), 1, 100, "Plant Slime", "medium", enemyPositions[1]));
+        enemyInstances.Add(new Fighter(getEnemyTemplate("fire"), 2, 100, "Fire Spider", "medium", enemyPositions[2]));
+        enemyInstances.Add(new Fighter(getEnemyTemplate("ice"), 2, 100, "Ice Golem", "medium", enemyPositions[3]));
+        enemyInstances.Add(new Fighter(getEnemyTemplate("earth"), 2, 100, "Earth Spider", "medium", enemyPositions[4]));
+
         // spawns enemies
         foreach (var enemy in enemyInstances)
         {

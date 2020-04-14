@@ -94,6 +94,12 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+
+    //A little something to quit the game
+    if (Input.GetKeyDown(KeyCode.Escape)) {
+        Application.Quit();
+    }
+
     }
 
 	void OnCollisionEnter(Collision collision)

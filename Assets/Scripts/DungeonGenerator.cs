@@ -63,6 +63,15 @@ public class DungeonGenerator : MonoBehaviour
     public int minRoomSize;
     public int maxRoomSize;
 
+    int startTileRow;
+    int startTileCol;
+
+    int endTileRow;
+    int endTileCol;
+
+    Room startRoom;
+
+
 
     //Array to track where tiles are. 
     //1 = Start Point
@@ -76,15 +85,15 @@ public class DungeonGenerator : MonoBehaviour
     public Room[] roomArray;
 
     //Holds positions of all items and monsters.
-    public ArrayList monsterArray = new ArrayList();
-    public ArrayList itemArray = new ArrayList();
+    public List<Vector3> monsterArray = new List<Vector3>();
+    public List<Vector3> itemArray = new List<Vector3>();
 
     //Arrays of Monster Types
     public ArrayList blueMonsters = new ArrayList();
     
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         //Adding Monsters to Monster Type Arrays.
         blueMonsters.Add(Resources.Load("Monsters/BlueMonster1"));
@@ -97,7 +106,7 @@ public class DungeonGenerator : MonoBehaviour
         //buildFloor();
 
         //Build the rooms based on how many we want and add them to the roomArray.
-        for(int r = 0; r < numRooms; r++)
+        for (int r = 0; r < numRooms; r++)
         {
             buildRoom(r);
         }
@@ -125,7 +134,7 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         //Get the two rooms where the start tile and the end tile will be.
-        Room startRoom = roomArray[rand.Next(0, numRooms - 1)];
+        startRoom = roomArray[rand.Next(0, numRooms - 1)];
         Room endRoom = roomArray[rand.Next(0, numRooms - 1)];
 
         //Make sure they are not in the same room.
@@ -136,8 +145,8 @@ public class DungeonGenerator : MonoBehaviour
 
         //Generate the locations of the start and end tiles.
         //Making sure that they are not out of bounds.
-        int startTileRow = startRoom.topRow;
-        int startTileCol = startRoom.topCol;
+        startTileRow = startRoom.topRow;
+        startTileCol = startRoom.topCol;
         while(startTileRow < 0 || startTileCol < 0)
         {
             if(startTileRow < 0)
@@ -151,8 +160,8 @@ public class DungeonGenerator : MonoBehaviour
             }
         }
 
-        int endTileRow = endRoom.botRow;
-        int endTileCol = endRoom.botCol;
+        endTileRow = endRoom.botRow;
+        endTileCol = endRoom.botCol;
         while(endTileRow >= rows || endTileCol >= cols)
         {
             if(endTileRow >= rows)
@@ -168,6 +177,9 @@ public class DungeonGenerator : MonoBehaviour
         tileArray[startTileRow, startTileCol] = 1;
         tileArray[endTileRow, endTileCol] = 2;
 
+        //Delete Monster in Start Room
+        tileArray[startRoom.monsterRow, startRoom.monsterCol] = 3;
+
         //connectRooms(roomArray[0], roomArray[1]);
 
         //Run through the tileArray and generate tiles for each value.
@@ -178,32 +190,32 @@ public class DungeonGenerator : MonoBehaviour
             {
                 if(tileArray[i, j] == 1)
                 {
-                    Instantiate(start, new Vector3(i * 2, 0, j * 2), Quaternion.identity);
+                    Instantiate(start, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
                 }
                 else if(tileArray[i, j] == 2)
                 {
-                    Instantiate(end, new Vector3(i * 2, 0, j * 2), Quaternion.identity);
+                    Instantiate(end, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
                 }
                 else if(tileArray[i, j] == 3)
                 {
                     if((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0))
                     {
-                        Instantiate(tile, new Vector3(i * 2, 0, j * 2), Quaternion.identity);
+                        Instantiate(tile, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
                     }
                     else
                     {
-                        Instantiate(tileDark, new Vector3(i * 2, 0, j * 2), Quaternion.identity);
+                        Instantiate(tileDark, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
                     }
                 }
                 else if(tileArray[i, j] == 4)
                 {
-                    Instantiate(monsterTile, new Vector3(i * 2, 0, j * 2), Quaternion.identity);
-                    monsterArray.Add(new Vector3(i * 2, 1, j * 2));
+                    Instantiate(monsterTile, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                    monsterArray.Add(new Vector3(i * 3, 0, j * 3));
                 }
                 else if(tileArray[i, j] == 5)
                 {
-                    Instantiate(itemTile, new Vector3(i * 2, 0, j * 2), Quaternion.identity);
-                    itemArray.Add(new Vector3(i * 2, 1, j * 2));
+                    Instantiate(itemTile, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                    itemArray.Add(new Vector3(i * 3, 0.0001f, j * 3));
                 }
                 
                 //counter++;
@@ -211,10 +223,13 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         //Instantiate Monsters.
+        
+        /*
         foreach(Vector3 pos in monsterArray)
         {
             int monsterIndex = rand.Next(0, blueMonsters.Count);
-            GameObject monster = (GameObject)blueMonsters[monsterIndex];
+            //GameObject monster = (GameObject)blueMonsters[monsterIndex];
+            GameObject monster
             Instantiate(monster, pos, Quaternion.identity);
         }
 
@@ -224,9 +239,17 @@ public class DungeonGenerator : MonoBehaviour
             //GameObject monster 
             Instantiate(itemPlaceHolder, pos, Quaternion.identity);
         }
+        */
 
         //Walls
         generateWalls();
+
+        //Changing other objects to coincide with the generated dungeon.
+        GameObject player = GameObject.Find("Player");
+        player.transform.position = new Vector3(3 * startTileRow, 0, 3* startTileCol);
+
+        GameObject arch = GameObject.Find("Archway");
+        arch.transform.position = new Vector3(3 * endTileRow, 0, 3 * endTileCol);
     }
 
     // Update is called once per frame
@@ -251,22 +274,22 @@ public class DungeonGenerator : MonoBehaviour
                     //Ignoring diagonals.
                     if((j + 1 >= cols) || tileArray[i, j + 1] == 0)
                     {
-                        Instantiate(wall, new Vector3(i * 2, 0, (j + 1) * 2), Quaternion.identity);
+                        Instantiate(wall, new Vector3(i * 3, 0, (j + 1) * 3), Quaternion.identity);
                     }
 
                     if((j - 1 < 0) || tileArray[i, j - 1] == 0)
                     {
-                        Instantiate(wall, new Vector3(i * 2, 0, (j - 1) * 2), Quaternion.identity);
+                        Instantiate(wall, new Vector3(i * 3, 0, (j - 1) * 3), Quaternion.identity);
                     }
 
                     if((i + 1 >= rows) || tileArray[i + 1, j] == 0)
                     {
-                        Instantiate(wall, new Vector3((i + 1) * 2, 0, j * 2), Quaternion.identity);
+                        Instantiate(wall, new Vector3((i + 1) * 3, 0, j * 3), Quaternion.identity);
                     }
 
                     if((i - 1 < 0) || tileArray[i - 1, j] == 0)
                     {
-                        Instantiate(wall, new Vector3((i - 1) * 2, 0, j * 2), Quaternion.identity);
+                        Instantiate(wall, new Vector3((i - 1) * 3, 0, j * 3), Quaternion.identity);
                     }
                 }
             }
@@ -354,7 +377,14 @@ public class DungeonGenerator : MonoBehaviour
                     {
                         if(i == builderRoom.monsterRow && j == builderRoom.monsterCol)
                         {
-                            tileArray[i, j] = 4;
+                            if(builderRoom == startRoom)
+                            {
+                                tileArray[i, j] = 3;
+                            }
+                            else 
+                            {
+                                tileArray[i, j] = 4;
+                            }  
                         }
                         else if(i == builderRoom.itemRow && j == builderRoom.itemCol)
                         {

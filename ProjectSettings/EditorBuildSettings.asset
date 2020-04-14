@@ -5,9 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/Scenes/Combat_old.unity
-    guid: 6016b16a069669a438bdbc29be54de81
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/Dungeon.unity
     guid: 09d91deca71f9194ebffe44d94a5a9a7
