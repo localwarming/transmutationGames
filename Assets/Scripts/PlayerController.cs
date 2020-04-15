@@ -14,6 +14,14 @@ public class PlayerController : MonoBehaviour
     public Fighter currentEnemy;
     public int health = 100;
 
+    //Used to store dungeon information
+    public bool dungeonGenerated = false;
+    public int[,] tileArray;
+
+    //Info regarding debt.
+    public int currentMoney;
+    public int currentDebt;
+
     // private vars
     int stepSize = 3;
     float moveSpeed = 10;
@@ -93,6 +101,13 @@ public class PlayerController : MonoBehaviour
                     StartCoroutine(SmoothMovement(transform.position + step)); // co-routine is run in background so that graphics update while smooth moving
                 }
             }
+
+            if(player.transform.position.x == GameObject.Find("Main Camera").GetComponent<DungeonGenerator>().endPos.x && player.transform.position.z == GameObject.Find("Main Camera").GetComponent<DungeonGenerator>().endPos.z)
+            {
+                //Player has reached the goal. 
+                SceneManager.LoadScene("MainMenu");
+            }
+
         }
 
     //A little something to quit the game
@@ -128,7 +143,7 @@ public class PlayerController : MonoBehaviour
     public void exitCombat()
     {
         currentEnemy = null;
-        SceneManager.LoadScene(sceneName: "Dungeon");
+        SceneManager.LoadScene(sceneName: "Dungeon With Generator");
         inCombat = false;
     }
 

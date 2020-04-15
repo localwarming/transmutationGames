@@ -66,8 +66,12 @@ public class DungeonGenerator : MonoBehaviour
     int startTileRow;
     int startTileCol;
 
-    int endTileRow;
-    int endTileCol;
+    public int endTileRow;
+    public int endTileCol;
+
+    public bool alreadyGenerated = false;
+
+    public Vector3 endPos;
 
     Room startRoom;
 
@@ -90,167 +94,236 @@ public class DungeonGenerator : MonoBehaviour
 
     //Arrays of Monster Types
     public ArrayList blueMonsters = new ArrayList();
-    
+
 
     // Start is called before the first frame update
-    void Awake()
+    void OnEnable()
     {
-        //Adding Monsters to Monster Type Arrays.
-        blueMonsters.Add(Resources.Load("Monsters/BlueMonster1"));
-        blueMonsters.Add(Resources.Load("Monsters/BlueMonster2"));
-        blueMonsters.Add(Resources.Load("Monsters/BlueMonster3"));
+        //DontDestroyOnLoad(this);
 
-        //Create the Room and tile arrays.
-        roomArray = new Room[numRooms];
-        tileArray = new int[rows, cols];
-        //buildFloor();
-
-        //Build the rooms based on how many we want and add them to the roomArray.
-        for (int r = 0; r < numRooms; r++)
+        if (!(GameObject.Find("Player").GetComponent<PlayerController>().dungeonGenerated))
         {
-            buildRoom(r);
-        }
-        addRooms();
+            //Adding Monsters to Monster Type Arrays.
+            blueMonsters.Add(Resources.Load("Monsters/BlueMonster1"));
+            blueMonsters.Add(Resources.Load("Monsters/BlueMonster2"));
+            blueMonsters.Add(Resources.Load("Monsters/BlueMonster3"));
 
+            //Create the Room and tile arrays.
+            roomArray = new Room[numRooms];
+            tileArray = new int[rows, cols];
+            //buildFloor();
 
-        //For each room, connect it with hallways to the preceeding two rooms. Loops back to the beginning of the roomArray if it goes over.
-        for(int i = 0; i < numRooms; i++)
-        {
-            int next = i + 1;
-            int next2 = i + 2;
-
-            //Check if either goes over and loop it to the beginning if it does. Example: if 7 rooms, Room 7 will have Next of 1 and Next2 of 2.
-            if(next >= numRooms)
+            //Build the rooms based on how many we want and add them to the roomArray.
+            for (int r = 0; r < numRooms; r++)
             {
-                next = next - numRooms;
+                buildRoom(r);
             }
-            if(next2 >= numRooms)
+            addRooms();
+
+
+            //For each room, connect it with hallways to the preceeding two rooms. Loops back to the beginning of the roomArray if it goes over.
+            for (int i = 0; i < numRooms; i++)
             {
-                next2 = next2 - numRooms;
-            }
-            //Connect them. This connects the middlish points of both rooms using an L-Shaped Hallway.
-            connectRooms(roomArray[i], roomArray[next]);
-            connectRooms(roomArray[i], roomArray[next2]);
-        }
+                int next = i + 1;
+                int next2 = i + 2;
 
-        //Get the two rooms where the start tile and the end tile will be.
-        startRoom = roomArray[rand.Next(0, numRooms - 1)];
-        Room endRoom = roomArray[rand.Next(0, numRooms - 1)];
-
-        //Make sure they are not in the same room.
-        while(startRoom == endRoom)
-        {
-            endRoom = roomArray[rand.Next(0, numRooms - 1)];
-        }
-
-        //Generate the locations of the start and end tiles.
-        //Making sure that they are not out of bounds.
-        startTileRow = startRoom.topRow;
-        startTileCol = startRoom.topCol;
-        while(startTileRow < 0 || startTileCol < 0)
-        {
-            if(startTileRow < 0)
-            {
-                startTileRow++;
-            }
-
-            if(startTileCol < 0)
-            {
-                startTileCol++;
-            }
-        }
-
-        endTileRow = endRoom.botRow;
-        endTileCol = endRoom.botCol;
-        while(endTileRow >= rows || endTileCol >= cols)
-        {
-            if(endTileRow >= rows)
-            {
-                endTileRow--;
-            }
-
-            if(endTileCol >= cols)
-            {
-                endTileCol--;
-            }
-        }
-        tileArray[startTileRow, startTileCol] = 1;
-        tileArray[endTileRow, endTileCol] = 2;
-
-        //Delete Monster in Start Room
-        tileArray[startRoom.monsterRow, startRoom.monsterCol] = 3;
-
-        //connectRooms(roomArray[0], roomArray[1]);
-
-        //Run through the tileArray and generate tiles for each value.
-        //int counter = 0;
-        for(int i = 0; i < rows; i++)
-        {
-            for(int j = 0; j < cols; j++)
-            {
-                if(tileArray[i, j] == 1)
+                //Check if either goes over and loop it to the beginning if it does. Example: if 7 rooms, Room 7 will have Next of 1 and Next2 of 2.
+                if (next >= numRooms)
                 {
-                    Instantiate(start, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                    next = next - numRooms;
                 }
-                else if(tileArray[i, j] == 2)
+                if (next2 >= numRooms)
                 {
-                    Instantiate(end, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                    next2 = next2 - numRooms;
                 }
-                else if(tileArray[i, j] == 3)
+                //Connect them. This connects the middlish points of both rooms using an L-Shaped Hallway.
+                connectRooms(roomArray[i], roomArray[next]);
+                connectRooms(roomArray[i], roomArray[next2]);
+            }
+
+            //Get the two rooms where the start tile and the end tile will be.
+            startRoom = roomArray[rand.Next(0, numRooms - 1)];
+            Room endRoom = roomArray[rand.Next(0, numRooms - 1)];
+
+            //Make sure they are not in the same room.
+            while (startRoom == endRoom)
+            {
+                endRoom = roomArray[rand.Next(0, numRooms - 1)];
+            }
+
+            //Generate the locations of the start and end tiles.
+            //Making sure that they are not out of bounds.
+            startTileRow = startRoom.topRow;
+            startTileCol = startRoom.topCol;
+            while (startTileRow < 0 || startTileCol < 0)
+            {
+                if (startTileRow < 0)
                 {
-                    if((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0))
+                    startTileRow++;
+                }
+
+                if (startTileCol < 0)
+                {
+                    startTileCol++;
+                }
+            }
+
+            endTileRow = endRoom.botRow;
+            endTileCol = endRoom.botCol;
+            while (endTileRow >= rows || endTileCol >= cols)
+            {
+                if (endTileRow >= rows)
+                {
+                    endTileRow--;
+                }
+
+                if (endTileCol >= cols)
+                {
+                    endTileCol--;
+                }
+            }
+            tileArray[startTileRow, startTileCol] = 1;
+            tileArray[endTileRow, endTileCol] = 2;
+
+            //Delete Monster in Start Room
+            tileArray[startRoom.monsterRow, startRoom.monsterCol] = 3;
+
+            //connectRooms(roomArray[0], roomArray[1]);
+
+            //Run through the tileArray and generate tiles for each value.
+            //int counter = 0;
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    if (tileArray[i, j] == 1)
                     {
-                        Instantiate(tile, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                        Instantiate(start, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
                     }
-                    else
+                    else if (tileArray[i, j] == 2)
                     {
-                        Instantiate(tileDark, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                        Instantiate(end, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                        endPos = new Vector3(i * 3, 0, j * 3);
                     }
+                    else if (tileArray[i, j] == 3)
+                    {
+                        if ((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0))
+                        {
+                            Instantiate(tile, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                        }
+                        else
+                        {
+                            Instantiate(tileDark, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                        }
+
+                        int random = rand.Next(0, 10);
+                        if (random == 1)
+                        {
+                            itemArray.Add(new Vector3(i * 3, 1f, j * 3));
+                        }
+
+                    }
+                    else if (tileArray[i, j] == 4)
+                    {
+                        Instantiate(monsterTile, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                        monsterArray.Add(new Vector3(i * 3, 0, j * 3));
+                    }
+                    else if (tileArray[i, j] == 5)
+                    {
+                        Instantiate(itemTile, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                        itemArray.Add(new Vector3(i * 3, 1f, j * 3));
+                    }
+
+                    //counter++;
                 }
-                else if(tileArray[i, j] == 4)
-                {
-                    Instantiate(monsterTile, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
-                    monsterArray.Add(new Vector3(i * 3, 0, j * 3));
-                }
-                else if(tileArray[i, j] == 5)
-                {
-                    Instantiate(itemTile, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
-                    itemArray.Add(new Vector3(i * 3, 0.0001f, j * 3));
-                }
-                
-                //counter++;
             }
-        }
 
-        //Instantiate Monsters.
-        
-        /*
-        foreach(Vector3 pos in monsterArray)
+            //Instantiate Monsters.
+
+            /*
+            foreach(Vector3 pos in monsterArray)
+            {
+                int monsterIndex = rand.Next(0, blueMonsters.Count);
+                //GameObject monster = (GameObject)blueMonsters[monsterIndex];
+                GameObject monster
+                Instantiate(monster, pos, Quaternion.identity);
+            }
+
+            //Instantiate Items.
+            foreach(Vector3 pos in itemArray)
+            {
+                //GameObject monster 
+                Instantiate(itemPlaceHolder, pos, Quaternion.identity);
+            }
+            */
+
+            //Walls
+            generateWalls();
+
+            //Changing other objects to coincide with the generated dungeon.
+            GameObject player = GameObject.Find("Player");
+            player.transform.position = new Vector3(3 * startTileRow, 0, 3 * startTileCol);
+
+            GameObject arch = GameObject.Find("Archway");
+            arch.transform.position = new Vector3(3 * endTileRow, 0, 3 * endTileCol);
+
+            //alreadyGenerated = true;
+        }
+        else
         {
-            int monsterIndex = rand.Next(0, blueMonsters.Count);
-            //GameObject monster = (GameObject)blueMonsters[monsterIndex];
-            GameObject monster
-            Instantiate(monster, pos, Quaternion.identity);
+            //Rebuild the dungeon based on previous tile array saved in the player object.
+            tileArray = GameObject.Find("Player").GetComponent<PlayerController>().tileArray;
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    if (tileArray[i, j] == 1)
+                    {
+                        Instantiate(start, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                    }
+                    else if (tileArray[i, j] == 2)
+                    {
+                        Instantiate(end, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                        endPos = new Vector3(i * 3, 0, j * 3);
+                    }
+                    else if (tileArray[i, j] == 3)
+                    {
+                        if ((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0))
+                        {
+                            Instantiate(tile, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                        }
+                        else
+                        {
+                            Instantiate(tileDark, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                        }
+
+                        int random = rand.Next(0, 10);
+                        if (random == 1)
+                        {
+                            itemArray.Add(new Vector3(i * 3, 1f, j * 3));
+                        }
+
+                    }
+                    else if (tileArray[i, j] == 4)
+                    {
+                        Instantiate(monsterTile, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                        monsterArray.Add(new Vector3(i * 3, 0, j * 3));
+                    }
+                    else if (tileArray[i, j] == 5)
+                    {
+                        Instantiate(itemTile, new Vector3(i * 3, 0, j * 3), Quaternion.identity);
+                        itemArray.Add(new Vector3(i * 3, 1f, j * 3));
+                    }
+
+                    //counter++;
+                }
+            }
+            //remake walls
+            generateWalls();
         }
-
-        //Instantiate Items.
-        foreach(Vector3 pos in itemArray)
-        {
-            //GameObject monster 
-            Instantiate(itemPlaceHolder, pos, Quaternion.identity);
-        }
-        */
-
-        //Walls
-        generateWalls();
-
-        //Changing other objects to coincide with the generated dungeon.
-        GameObject player = GameObject.Find("Player");
-        player.transform.position = new Vector3(3 * startTileRow, 0, 3* startTileCol);
-
-        GameObject arch = GameObject.Find("Archway");
-        arch.transform.position = new Vector3(3 * endTileRow, 0, 3 * endTileCol);
     }
+
 
     // Update is called once per frame
     void Update()

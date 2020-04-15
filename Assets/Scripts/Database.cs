@@ -242,15 +242,44 @@ public static class Database
 
     public static void dropItems()
     {
-        //Create items.
-        itemPositions = camera.GetComponent<DungeonGenerator>().itemArray;
-        itemInstances.Clear();
-        itemInstances.Add(new Item(getItemTemplate("water"), 0, "Blue Potion", "attack", "strong", itemPositions[0]));
-        itemInstances.Add(new Item(getItemTemplate("plant"), 1, "Green Potion", "attack", "strong", itemPositions[1]));
-        itemInstances.Add(new Item(getItemTemplate("fire"), 2, "Red Potion", "attack", "strong", itemPositions[2]));
-        itemInstances.Add(new Item(getItemTemplate("plant"), 3, "Green Potion", "attack", "strong", itemPositions[3]));
-        itemInstances.Add(new Item(getItemTemplate("fire"), 4, "Red Potion", "attack", "strong", itemPositions[4]));
-        //itemInstances.Add(new Item(getItemTemplate("plant"), 5, "Green Potion", "attack", "strong", itemPositions[5]));
+        //Only want to do this once on generation.
+        if (!(GameObject.Find("Player").GetComponent<PlayerController>().dungeonGenerated))
+        {
+            //Items list.
+            List<Item> itemList = new List<Item>();
+            itemList.Add(new Item(getItemTemplate("water"), 0, "Blue Potion", "attack", "strong", new Vector3(0, 3, 0)));
+            itemList.Add(new Item(getItemTemplate("plant"), 1, "Green Potion", "attack", "strong", new Vector3(0, 6, 0)));
+            itemList.Add(new Item(getItemTemplate("fire"), 2, "Red Potion", "attack", "strong", new Vector3(0, 9, 0)));
+            itemList.Add(new Item(getItemTemplate("ice"), 3, "Violet Potion", "attack", "strong", new Vector3(0, 12, 0)));
+            itemList.Add(new Item(getItemTemplate("earth"), 4, "Yellow Potion", "attack", "strong", new Vector3(0, 15, 0)));
+            //Create items.
+            itemPositions = GameObject.Find("Main Camera").GetComponent<DungeonGenerator>().itemArray;
+            itemInstances.Clear();
+            /*
+            itemInstances.Add(new Item(getItemTemplate("water"), 0, "Blue Potion", "attack", "strong", itemPositions[0]));
+            itemInstances.Add(new Item(getItemTemplate("plant"), 1, "Green Potion", "attack", "strong", itemPositions[1]));
+            itemInstances.Add(new Item(getItemTemplate("fire"), 2, "Red Potion", "attack", "strong", itemPositions[2]));
+            itemInstances.Add(new Item(getItemTemplate("plant"), 3, "Green Potion", "attack", "strong", itemPositions[3]));
+            itemInstances.Add(new Item(getItemTemplate("fire"), 4, "Red Potion", "attack", "strong", itemPositions[4]));
+            //itemInstances.Add(new Item(getItemTemplate("plant"), 5, "Green Potion", "attack", "strong", itemPositions[5]));
+            */
+            System.Random rand = new System.Random();
+
+            int counter = 0;
+            foreach (Vector3 pos in GameObject.Find("Main Camera").GetComponent<DungeonGenerator>().itemArray)
+            {
+                int itemDecider = rand.Next(0, itemList.Count);
+                Item itemToAdd = itemList[itemDecider];
+
+                Item realItem = new Item(getItemTemplate(itemToAdd.element), counter, itemToAdd.name, itemToAdd.type, itemToAdd.strength, itemToAdd.position);
+
+                realItem.position = pos;
+                realItem.id = counter;
+                Debug.Log("" + itemToAdd.position.x + "," + itemToAdd.position.y + "," + itemToAdd.position.z);
+                itemInstances.Add(realItem);
+                counter++;
+            }
+        }
 
         // function to spawn all items
         foreach (var item in itemInstances)
@@ -325,16 +354,44 @@ public static class Database
 
     public static void dropEnemies()
     {
-        //Create Enemies
-        
-        enemyPositions = camera.GetComponent<DungeonGenerator>().monsterArray;
-        Debug.Log(enemyPositions.Count);
-        enemyInstances.Add(new Fighter(getEnemyTemplate("water"), 0, 100, "Water Slime", "weak", enemyPositions[0]));
-        enemyInstances.Add(new Fighter(getEnemyTemplate("plant"), 1, 100, "Plant Slime", "medium", enemyPositions[1]));
-        enemyInstances.Add(new Fighter(getEnemyTemplate("fire"), 2, 100, "Fire Spider", "medium", enemyPositions[2]));
-        enemyInstances.Add(new Fighter(getEnemyTemplate("ice"), 2, 100, "Ice Golem", "medium", enemyPositions[3]));
-        enemyInstances.Add(new Fighter(getEnemyTemplate("earth"), 2, 100, "Earth Spider", "medium", enemyPositions[4]));
+        //Only want to do this once on generation.
+        if (!(GameObject.Find("Player").GetComponent<PlayerController>().dungeonGenerated))
+        {
+            //Items list.
+            List<Fighter> monsterList = new List<Fighter>();
+            monsterList.Add(new Fighter(getEnemyTemplate("water"), 0, 100, "Water Slime", "weak", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplate("plant"), 1, 100, "Plant Slime", "medium", enemyPositions[1]));
+            monsterList.Add(new Fighter(getEnemyTemplate("fire"), 2, 100, "Fire Spider", "medium", enemyPositions[2]));
+            monsterList.Add(new Fighter(getEnemyTemplate("ice"), 2, 100, "Ice Golem", "medium", enemyPositions[3]));
+            monsterList.Add(new Fighter(getEnemyTemplate("earth"), 2, 100, "Earth Spider", "medium", enemyPositions[4]));
+            //Create items.
+            enemyPositions = GameObject.Find("Main Camera").GetComponent<DungeonGenerator>().monsterArray;
+            enemyInstances.Clear();
+            /*
+            itemInstances.Add(new Item(getItemTemplate("water"), 0, "Blue Potion", "attack", "strong", itemPositions[0]));
+            itemInstances.Add(new Item(getItemTemplate("plant"), 1, "Green Potion", "attack", "strong", itemPositions[1]));
+            itemInstances.Add(new Item(getItemTemplate("fire"), 2, "Red Potion", "attack", "strong", itemPositions[2]));
+            itemInstances.Add(new Item(getItemTemplate("plant"), 3, "Green Potion", "attack", "strong", itemPositions[3]));
+            itemInstances.Add(new Item(getItemTemplate("fire"), 4, "Red Potion", "attack", "strong", itemPositions[4]));
+            //itemInstances.Add(new Item(getItemTemplate("plant"), 5, "Green Potion", "attack", "strong", itemPositions[5]));
+            */
+            System.Random rand = new System.Random();
 
+            int counter = 0;
+            foreach (Vector3 pos in GameObject.Find("Main Camera").GetComponent<DungeonGenerator>().monsterArray)
+            {
+                int monsterDecider = rand.Next(0, monsterList.Count);
+                Fighter monsterToAdd = monsterList[monsterDecider];
+
+                Fighter realMonster = new Fighter(getEnemyTemplate(monsterToAdd.element), counter, monsterToAdd.health, monsterToAdd.name, monsterToAdd.strength, monsterToAdd.position);
+
+                realMonster.position = pos;
+                realMonster.id = counter;
+                //Debug.Log("" + itemToAdd.position.x + "," + itemToAdd.position.y + "," + itemToAdd.position.z);
+                enemyInstances.Add(realMonster);
+                counter++;
+            }
+        }
         // spawns enemies
         foreach (var enemy in enemyInstances)
         {

@@ -8,6 +8,9 @@ public class GameController : MonoBehaviour
     {
         Database.dropItems();
         Database.dropEnemies();
+
+        GameObject.Find("Player").GetComponent<PlayerController>().dungeonGenerated = true;
+        GameObject.Find("Player").GetComponent<PlayerController>().tileArray = GameObject.Find("Main Camera").GetComponent<DungeonGenerator>().tileArray;
     }
 
     void Update()
