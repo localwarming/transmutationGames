@@ -264,8 +264,8 @@ public class DungeonGenerator : MonoBehaviour
             GameObject player = GameObject.Find("Player");
             player.transform.position = new Vector3(3 * startTileRow, 0, 3 * startTileCol);
 
-            GameObject arch = GameObject.Find("Archway");
-            arch.transform.position = new Vector3(3 * endTileRow, 0, 3 * endTileCol);
+            GameObject ladder = GameObject.Find("Ladder");
+            ladder.transform.position = new Vector3(3 * endTileRow, 3, 3 * endTileCol);
 
             //alreadyGenerated = true;
         }

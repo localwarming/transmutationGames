@@ -24,9 +24,8 @@ public class MainMenuController : MonoBehaviour
     }
 
     //Starts the shop scene.
-    //IMPORTANT: Right now it is set the Dungeon With Generator since we don't have a shop screen.
     public void StartButton()
     {
-        SceneManager.LoadScene("Dungeon With Generator");
+        SceneManager.LoadScene("ShopScreen");
     }
 }

@@ -19,8 +19,10 @@ public class PlayerController : MonoBehaviour
     public int[,] tileArray;
 
     //Info regarding debt.
-    public int currentMoney;
-    public int currentDebt;
+    public int currentMoney = 0;
+    public int currentDebt = 500;
+    public int daysRemaining = 5;
+    public int strikes = 0;
 
     // private vars
     int stepSize = 3;
@@ -102,10 +104,19 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            if(player.transform.position.x == GameObject.Find("Main Camera").GetComponent<DungeonGenerator>().endPos.x && player.transform.position.z == GameObject.Find("Main Camera").GetComponent<DungeonGenerator>().endPos.z)
+            //This needs to be fixed. Supposed to be reaching the end tile and leaving.
+            if (GameObject.Find("Main Camera").GetComponent<DungeonGenerator>() != null)
             {
-                //Player has reached the goal. 
-                SceneManager.LoadScene("MainMenu");
+                Debug.Log("Player location: " + player.transform.position.x + "," + player.transform.position.z);
+                Debug.Log("Exit location: " + GameObject.Find("Ladder").transform.position.x + "," + GameObject.Find("Ladder").transform.position.z);
+
+                if (Math.Abs(player.transform.position.x - GameObject.Find("Ladder").transform.position.x) < 3 && Math.Abs(player.transform.position.z - GameObject.Find("Ladder").transform.position.z) < 3)
+                {
+                    //Player has reached the goal.
+                    //Give some sort of message and then a reward (Current reward is $150).
+                    currentMoney = currentMoney + 150;
+                    SceneManager.LoadScene("ShopScreen");
+                }
             }
 
         }
@@ -125,6 +136,7 @@ public class PlayerController : MonoBehaviour
             Destroy(collision.gameObject);          // delete the pickup from the scene
             inventory.Add(item);                    // add item to persistent inventory
             Database.itemInstances.Remove(item);    // delete item istance
+            GameObject.Find("Main Camera").GetComponent<DungeonGUI>().pickupText = "You Picked Up: " + item.name + "!";
         }
         else if (collision.gameObject.tag == "Enemy")
         {

@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dungeon With Generator.unity
     guid: d1f62ef47b3b70a4394a0948297eb83a
+  - enabled: 1
+    path: Assets/Scenes/ShopScreen.unity
+    guid: 07ab3c0bc618faa4bb74a21f326112a1
   m_configObjects: {}

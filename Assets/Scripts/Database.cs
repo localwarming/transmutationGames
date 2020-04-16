@@ -47,15 +47,18 @@ public class Item : MagicElement
 {
     // item specific variables
     public string type;
+    public int value;
 
     // assign all instance specific vars using base template
-    public Item(MagicElement _base, int _id, string _name, string _type, string _strength, Vector3 _position) : base(_base)
+    public Item(MagicElement _base, int _id, string _name, string _type, string _strength, Vector3 _position, int _value) : base(_base)
     {
         id = _id;
         name = _name;
         type = _type;
         strength = _strength;
         position = _position;
+        value = _value;
+
     }
 
     // get random strength from within bounds specified in strength array for instance strength
@@ -204,6 +207,7 @@ public static class Database
         // can be hardcoded (as is now) or dynamic in the future
         // (i.e. for making a dungeon have more strong items)
         //                      element   id      name         type   strength     position      
+        /*
         new Item(getItemTemplate("water"), 0, "Blue Potion", "attack", "strong", itemPositions[0]),
         new Item(getItemTemplate("plant"), 1, "Green Potion", "attack", "strong", itemPositions[1]),
         new Item(getItemTemplate("fire"),  2, "Red Potion", "attack", "strong", itemPositions[2]),
@@ -229,6 +233,7 @@ public static class Database
         new Item(getItemTemplate("fire"), 22, "Red Potion", "attack", "strong", itemPositions[22]),
         new Item(getItemTemplate("water"), 23, "Blue Potion", "attack", "strong", itemPositions[23]),
         new Item(getItemTemplate("water"), 24, "Blue Potion", "attack", "strong", itemPositions[24]),
+        */
     };
     public static Item getItemInstance(int id)
     {
@@ -247,11 +252,80 @@ public static class Database
         {
             //Items list.
             List<Item> itemList = new List<Item>();
-            itemList.Add(new Item(getItemTemplate("water"), 0, "Blue Potion", "attack", "strong", new Vector3(0, 3, 0)));
-            itemList.Add(new Item(getItemTemplate("plant"), 1, "Green Potion", "attack", "strong", new Vector3(0, 6, 0)));
-            itemList.Add(new Item(getItemTemplate("fire"), 2, "Red Potion", "attack", "strong", new Vector3(0, 9, 0)));
-            itemList.Add(new Item(getItemTemplate("ice"), 3, "Violet Potion", "attack", "strong", new Vector3(0, 12, 0)));
-            itemList.Add(new Item(getItemTemplate("earth"), 4, "Yellow Potion", "attack", "strong", new Vector3(0, 15, 0)));
+
+            /* Items For Whenever We are Ready For them.
+            //Fire Items
+            itemList.Add(new Item(getItemTemplate("fire"), 0, "Fire Berry I", "attack", "weak", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplate("fire"), 1, "Fire Berry II", "attack", "medium", new Vector3(0, 0, 0), 20));
+            itemList.Add(new Item(getItemTemplate("fire"), 2, "Fire Berry III", "attack", "strong", new Vector3(0, 0, 0), 30));
+
+            itemList.Add(new Item(getItemTemplate("fire"), 3, "Fire Block I", "block", "weak", new Vector3(0, 0, 0), 5));
+            itemList.Add(new Item(getItemTemplate("fire"), 4, "Fire Block II", "block", "medium", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplate("fire"), 5, "Fire Block III", "block", "strong", new Vector3(0, 0, 0), 15));
+
+            itemList.Add(new Item(getItemTemplate("fire"), 6, "Sriracha I", "heal", "weak", new Vector3(0, 0, 0), 8));
+            itemList.Add(new Item(getItemTemplate("fire"), 7, "Sriracha II", "heal", "medium", new Vector3(0, 0, 0), 16));
+            itemList.Add(new Item(getItemTemplate("fire"), 8, "Sriracha III", "heal", "strong", new Vector3(0, 0, 0), 24));
+
+            //Water Items
+            itemList.Add(new Item(getItemTemplate("water"), 9, "Coral I", "attack", "weak", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplate("water"), 10, "Coral II", "attack", "medium", new Vector3(0, 0, 0), 20));
+            itemList.Add(new Item(getItemTemplate("water"), 11, "Coral III", "attack", "strong", new Vector3(0, 0, 0), 30));
+
+            itemList.Add(new Item(getItemTemplate("water"), 12, "Seaweed I", "block", "weak", new Vector3(0, 0, 0), 5));
+            itemList.Add(new Item(getItemTemplate("water"), 13, "Seaweed II", "block", "medium", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplate("water"), 14, "Seaweed III", "block", "strong", new Vector3(0, 0, 0), 15));
+
+            itemList.Add(new Item(getItemTemplate("water"), 15, "Zephyrhills I", "heal", "weak", new Vector3(0, 0, 0), 8));
+            itemList.Add(new Item(getItemTemplate("water"), 16, "Zephyrjills II", "heal", "medium", new Vector3(0, 0, 0), 16));
+            itemList.Add(new Item(getItemTemplate("water"), 17, "Zephyrhills III", "heal", "strong", new Vector3(0, 0, 0), 24));
+
+            //Ice Items
+            itemList.Add(new Item(getItemTemplate("ice"), 18, "Snowball I", "attack", "weak", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplate("ice"), 19, "Snowball II", "attack", "medium", new Vector3(0, 0, 0), 20));
+            itemList.Add(new Item(getItemTemplate("ice"), 20, "Snowball III", "attack", "strong", new Vector3(0, 0, 0), 30));
+
+            itemList.Add(new Item(getItemTemplate("ice"), 21, "Earflap Hat I", "block", "weak", new Vector3(0, 0, 0), 5));
+            itemList.Add(new Item(getItemTemplate("ice"), 22, "Earflap Hat II", "block", "medium", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplate("ice"), 23, "Earflap Hat III", "block", "strong", new Vector3(0, 0, 0), 15));
+
+            itemList.Add(new Item(getItemTemplate("ice"), 24, "Hot Cocoa I", "heal", "weak", new Vector3(0, 0, 0), 8));
+            itemList.Add(new Item(getItemTemplate("ice"), 25, "Hot Cocoa II", "heal", "medium", new Vector3(0, 0, 0), 16));
+            itemList.Add(new Item(getItemTemplate("ice"), 26, "Hot Cocoa III", "heal", "strong", new Vector3(0, 0, 0), 24));
+
+            //Earth Items
+            itemList.Add(new Item(getItemTemplate("earth"), 27, "Fossil I", "attack", "weak", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplate("earth"), 28, "Fossil II", "attack", "medium", new Vector3(0, 0, 0), 20));
+            itemList.Add(new Item(getItemTemplate("earth"), 29, "Fossil III", "attack", "strong", new Vector3(0, 0, 0), 30));
+
+            itemList.Add(new Item(getItemTemplate("earth"), 30, "Earth Block I", "block", "weak", new Vector3(0, 0, 0), 5));
+            itemList.Add(new Item(getItemTemplate("earth"), 31, "Earth Block II", "block", "medium", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplate("earth"), 32, "Earth Block III", "block", "strong", new Vector3(0, 0, 0), 15));
+
+            itemList.Add(new Item(getItemTemplate("water"), 33, "Rock Candy I", "heal", "weak", new Vector3(0, 0, 0), 8));
+            itemList.Add(new Item(getItemTemplate("water"), 34, "Rock Candy II", "heal", "medium", new Vector3(0, 0, 0), 16));
+            itemList.Add(new Item(getItemTemplate("water"), 35, "Rack Candy III", "heal", "strong", new Vector3(0, 0, 0), 24));
+
+            //Plant Items
+            itemList.Add(new Item(getItemTemplate("plant"), 36, "Nettles I", "attack", "weak", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplate("plant"), 37, "Nettles II", "attack", "medium", new Vector3(0, 0, 0), 20));
+            itemList.Add(new Item(getItemTemplate("plant"), 38, "Nettles III", "attack", "strong", new Vector3(0, 0, 0), 30));
+
+            itemList.Add(new Item(getItemTemplate("plant"), 39, "Heartwood I", "block", "weak", new Vector3(0, 0, 0), 5));
+            itemList.Add(new Item(getItemTemplate("plant"), 40, "Heartwood II", "block", "medium", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplate("plant"), 41, "Heartwood III", "block", "strong", new Vector3(0, 0, 0), 15));
+
+            itemList.Add(new Item(getItemTemplate("plant"), 42, "Spring Sprig I", "heal", "weak", new Vector3(0, 0, 0), 8));
+            itemList.Add(new Item(getItemTemplate("plant"), 43, "Spring Sprig II", "heal", "medium", new Vector3(0, 0, 0), 16));
+            itemList.Add(new Item(getItemTemplate("plant"), 44, "Spring Sprig III", "heal", "strong", new Vector3(0, 0, 0), 24));
+
+            */
+
+            itemList.Add(new Item(getItemTemplate("water"), 0, "Blue Potion", "attack", "strong", new Vector3(0, 0, 0), 30));
+            itemList.Add(new Item(getItemTemplate("plant"), 1, "Green Potion", "attack", "strong", new Vector3(0, 0, 0), 30));
+            itemList.Add(new Item(getItemTemplate("fire"), 2, "Red Potion", "attack", "strong", new Vector3(0, 0, 0), 30));
+            itemList.Add(new Item(getItemTemplate("ice"), 3, "Violet Potion", "attack", "strong", new Vector3(0, 0, 0), 30));
+            itemList.Add(new Item(getItemTemplate("earth"), 4, "Yellow Potion", "attack", "strong", new Vector3(0, 0, 0), 30));
             //Create items.
             itemPositions = GameObject.Find("Main Camera").GetComponent<DungeonGenerator>().itemArray;
             itemInstances.Clear();
@@ -271,7 +345,7 @@ public static class Database
                 int itemDecider = rand.Next(0, itemList.Count);
                 Item itemToAdd = itemList[itemDecider];
 
-                Item realItem = new Item(getItemTemplate(itemToAdd.element), counter, itemToAdd.name, itemToAdd.type, itemToAdd.strength, itemToAdd.position);
+                Item realItem = new Item(getItemTemplate(itemToAdd.element), counter, itemToAdd.name, itemToAdd.type, itemToAdd.strength, itemToAdd.position, itemToAdd.value);
 
                 realItem.position = pos;
                 realItem.id = counter;
@@ -367,14 +441,6 @@ public static class Database
             //Create items.
             enemyPositions = GameObject.Find("Main Camera").GetComponent<DungeonGenerator>().monsterArray;
             enemyInstances.Clear();
-            /*
-            itemInstances.Add(new Item(getItemTemplate("water"), 0, "Blue Potion", "attack", "strong", itemPositions[0]));
-            itemInstances.Add(new Item(getItemTemplate("plant"), 1, "Green Potion", "attack", "strong", itemPositions[1]));
-            itemInstances.Add(new Item(getItemTemplate("fire"), 2, "Red Potion", "attack", "strong", itemPositions[2]));
-            itemInstances.Add(new Item(getItemTemplate("plant"), 3, "Green Potion", "attack", "strong", itemPositions[3]));
-            itemInstances.Add(new Item(getItemTemplate("fire"), 4, "Red Potion", "attack", "strong", itemPositions[4]));
-            //itemInstances.Add(new Item(getItemTemplate("plant"), 5, "Green Potion", "attack", "strong", itemPositions[5]));
-            */
             System.Random rand = new System.Random();
 
             int counter = 0;
