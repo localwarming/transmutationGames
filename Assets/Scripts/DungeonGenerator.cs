@@ -266,6 +266,7 @@ public class DungeonGenerator : MonoBehaviour
 
             GameObject ladder = GameObject.Find("Ladder");
             ladder.transform.position = new Vector3(3 * endTileRow, 3, 3 * endTileCol);
+            player.GetComponent<PlayerController>().ladderPos = ladder.transform.position;
 
             //alreadyGenerated = true;
         }
@@ -321,6 +322,9 @@ public class DungeonGenerator : MonoBehaviour
             }
             //remake walls
             generateWalls();
+
+            GameObject ladder = GameObject.Find("Ladder");
+            ladder.transform.position = GameObject.Find("Player").GetComponent<PlayerController>().ladderPos;
         }
     }
 

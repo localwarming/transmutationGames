@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     //Used to store dungeon information
     public bool dungeonGenerated = false;
     public int[,] tileArray;
+    public Vector3 ladderPos;
+    public bool foundExit = false;
 
     //Info regarding debt.
     public int currentMoney = 0;
@@ -104,17 +106,15 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            //This needs to be fixed. Supposed to be reaching the end tile and leaving.
             if (GameObject.Find("Main Camera").GetComponent<DungeonGenerator>() != null)
             {
-                Debug.Log("Player location: " + player.transform.position.x + "," + player.transform.position.z);
-                Debug.Log("Exit location: " + GameObject.Find("Ladder").transform.position.x + "," + GameObject.Find("Ladder").transform.position.z);
-
                 if (Math.Abs(player.transform.position.x - GameObject.Find("Ladder").transform.position.x) < 3 && Math.Abs(player.transform.position.z - GameObject.Find("Ladder").transform.position.z) < 3)
                 {
                     //Player has reached the goal.
                     //Give some sort of message and then a reward (Current reward is $150).
+                    foundExit = true;
                     currentMoney = currentMoney + 150;
+                    transform.position = new Vector3(transform.position.x, transform.position.y + 500, transform.position.z);
                     SceneManager.LoadScene("ShopScreen");
                 }
             }

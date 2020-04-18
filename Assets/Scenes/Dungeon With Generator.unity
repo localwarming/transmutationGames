@@ -156,7 +156,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 08fb26ab8c7325f46b77afe6632e35e2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 25.12343
+      value: 17.6
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 08fb26ab8c7325f46b77afe6632e35e2,
         type: 3}
@@ -166,7 +166,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 08fb26ab8c7325f46b77afe6632e35e2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 32.379913
+      value: -40.3
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 08fb26ab8c7325f46b77afe6632e35e2,
         type: 3}
@@ -1378,6 +1378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickupText: 
+  myGUISkin: {fileID: 11400000, guid: 78760048504bf254980071d80d90f5fc, type: 2}
 --- !u!1 &1362372699
 GameObject:
   m_ObjectHideFlags: 0

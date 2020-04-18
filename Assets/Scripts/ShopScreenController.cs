@@ -3,9 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class ShopScreenController : MonoBehaviour
 {
+    public bool selling = false;
+    public int moneyEarned = 0;
+    public bool loanShark = false;
+    public bool onlySellOnce = true;
+    public bool winCondition = false;
+    public bool lossCondition = false;
+    public bool warning = false;
+    public bool dontDisplay = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,27 +68,40 @@ public class ShopScreenController : MonoBehaviour
             PlayerController playerInfo = GameObject.Find("Player").GetComponent<PlayerController>();
 
             //Sell off all items in the player's inventory and then clear it.
-            foreach(Item item in playerInfo.inventory)
+            if (onlySellOnce)
             {
-                playerInfo.currentMoney = playerInfo.currentMoney + item.value;
+                foreach (Item item in playerInfo.inventory)
+                {
+                    playerInfo.currentMoney = playerInfo.currentMoney + item.value;
+                    moneyEarned = moneyEarned + item.value;
+                    selling = true;
+                }
+                playerInfo.inventory.Clear();
+                onlySellOnce = false;
             }
-            playerInfo.inventory.Clear();
 
             if(playerInfo.currentMoney >= playerInfo.currentDebt)
             {
                 //Pop a window or something saying they won.
                 Debug.Log("Win Condition met");
+                winCondition = true;
             }
 
-            if(playerInfo.daysRemaining == 0 && playerInfo.strikes != 3)
+            if(playerInfo.daysRemaining == 0 && playerInfo.strikes != 3 && !dontDisplay)
             {
                 playerInfo.daysRemaining = 5;
                 playerInfo.strikes++;
+                warning = true;
             }
-            else if(playerInfo.daysRemaining == 0 && playerInfo.strikes == 3)
+            else if(playerInfo.strikes == 3)
             {
                 //Pop up a window or something saying they lost.
                 Debug.Log("Loss Condition Met");
+                lossCondition = true;
+            }
+            if(dontDisplay && playerInfo.daysRemaining == 0 && playerInfo.strikes != 3)
+            {
+                dontDisplay = false;
             }
         }
 
@@ -95,17 +118,19 @@ public class ShopScreenController : MonoBehaviour
     //Starts the next dungeon
     public void NewDungeon()
     {
-        if(GameObject.Find("Player") != null)
+        dontDisplay = true;
+        SceneManager.LoadScene("Dungeon With Generator");
+        if (GameObject.Find("Player") != null)
         {
             GameObject.Find("Player").GetComponent<PlayerController>().daysRemaining--;
         }
-        SceneManager.LoadScene("Dungeon With Generator");
+        //onlySellOnce = true;
     }
 
     //Visits the Loan Shark
     public void VisitLoanShark()
     {
-
+        loanShark = true;
     }
 
     //Saves the game
@@ -125,6 +150,29 @@ public class ShopScreenController : MonoBehaviour
     {
         //Check price, and player's current money.
         //If player has enough money, reduce money by value of item and add item to player's inventory.
+        string itemToBuyName = EventSystem.current.currentSelectedGameObject.name;
+        Item itemToBuy = null;
+        foreach(Item item in Database.itemList)
+        {
+            if(item.name == itemToBuyName)
+            {
+                itemToBuy = item;
+            }
+        }
+
+        int neededMoney = itemToBuy.value;
+        if(neededMoney > GameObject.Find("Player").GetComponent<PlayerController>().currentMoney)
+        {
+            //Do nothing. Or maybe make a message or something about them not having enough money.
+            return;
+        }
+        else
+        {
+            //They have enough cash to purchase it.
+            GameObject.Find("Player").GetComponent<PlayerController>().currentMoney -= neededMoney;
+            GameObject.Find("Player").GetComponent<PlayerController>().inventory.Add(itemToBuy);
+        }
+
     }
 
     //Sells an item

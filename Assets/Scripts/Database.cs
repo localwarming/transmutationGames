@@ -24,14 +24,16 @@ public class MagicElement
     public string strength;     // weak, medium, or strong
     public Vector3 position;    // persistent position
     public int id;              // unique id for if its ever needed
+    public string itemType;     // used for differentiating types (name of item) for sprite paths within the same element.
 
-    public MagicElement(int[,] _strengthArray, string _element, string _meshPath, string _matPath, string _spritePath)
+    public MagicElement(int[,] _strengthArray, string _element, string _itemType, string _meshPath, string _matPath, string _spritePath)
     {
         strengthArray = _strengthArray;
         element = _element;
         meshPath = _meshPath;
         matPath = _matPath;
         spritePath = _spritePath;
+        itemType = _itemType;
     }
     public MagicElement(MagicElement copy)
     {
@@ -40,6 +42,7 @@ public class MagicElement
         meshPath = copy.meshPath;
         matPath = copy.matPath;
         spritePath = copy.spritePath;
+        itemType = copy.itemType;
     }
 }
 
@@ -152,6 +155,8 @@ public class Fighter : MagicElement
 public static class Database
 {
     #region item database
+
+    public static List<Item> itemList;
     // item stuff
     public static List<MagicElement> itemTemplates = new List<MagicElement>()               
     {   
@@ -160,15 +165,29 @@ public static class Database
         // then storing it in an instantiated items list
         // this list is used to render all persistent items spawned in the level
         //[minStrength,max]for weak     medium    strong     type                     meshPath                                       matPath
-        new MagicElement(new int[,] {{10, 12}, {20, 25}, {48, 55}}, "water", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Blue Potion"),
-        new MagicElement(new int[,] {{5, 8}, {15, 18}, {30, 38}}, "earth", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Yellow Potion"),
-        new MagicElement(new int[,] {{3, 10}, {12, 20}, {28, 45}}, "fire", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Red Potion"),
-        new MagicElement(new int[,] {{8, 15}, {18, 30}, {40, 80}}, "plant", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Green Potion"),
-        new MagicElement(new int[,] {{5, 8}, {15, 25}, {30, 50}}, "ice", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Violet Potion")
+        new MagicElement(new int[,] {{10, 12}, {20, 25}, {48, 55}}, "water", "coral", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Coral"),
+        new MagicElement(new int[,] {{10, 12}, {20, 25}, {48, 55}}, "water", "seaweed", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Seaweed"),
+        new MagicElement(new int[,] {{10, 12}, {20, 25}, {48, 55}}, "water", "zephyrhills", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Zephyrhills"),
+        new MagicElement(new int[,] {{5, 8}, {15, 18}, {30, 38}}, "earth", "fossil", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Fossil"),
+        new MagicElement(new int[,] {{5, 8}, {15, 18}, {30, 38}}, "earth", "brick", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Fossil"), //NEED SPRITE
+        new MagicElement(new int[,] {{5, 8}, {15, 18}, {30, 38}}, "earth", "rock candy", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Fossil"), //NEED SPRITE
+        new MagicElement(new int[,] {{3, 10}, {12, 20}, {28, 45}}, "fire", "fire berry", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Fireberry"),
+        new MagicElement(new int[,] {{3, 10}, {12, 20}, {28, 45}}, "fire", "blast shield", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Fireberry"), //NEED SPRITE
+        new MagicElement(new int[,] {{3, 10}, {12, 20}, {28, 45}}, "fire", "sriracha", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Sriracha"),
+        new MagicElement(new int[,] {{8, 15}, {18, 30}, {40, 80}}, "plant", "nettles", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Nettle"),
+        new MagicElement(new int[,] {{8, 15}, {18, 30}, {40, 80}}, "plant", "heartwood", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Heartwood"),
+        new MagicElement(new int[,] {{8, 15}, {18, 30}, {40, 80}}, "plant", "spring sprig", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/SpringSprig"),
+        new MagicElement(new int[,] {{5, 8}, {15, 25}, {30, 50}}, "ice", "snowball", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Snowball"),
+        new MagicElement(new int[,] {{5, 8}, {15, 25}, {30, 50}}, "ice", "earflap hat", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/EarflapHat"),
+        new MagicElement(new int[,] {{5, 8}, {15, 25}, {30, 50}}, "ice", "hot cocoa", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/HotCocoa")
     };
     public static MagicElement getItemTemplate(string element)
     {
         return itemTemplates.Find(item => item.element == element);
+    }
+    public static MagicElement getItemTemplateByType(string type)
+    {
+        return itemTemplates.Find(item => item.itemType == type);
     }
     public static List<Vector3> itemPositions = new List<Vector3>()        
     {  
@@ -251,81 +270,83 @@ public static class Database
         if (!(GameObject.Find("Player").GetComponent<PlayerController>().dungeonGenerated))
         {
             //Items list.
-            List<Item> itemList = new List<Item>();
-
-            /* Items For Whenever We are Ready For them.
+            itemList = new List<Item>();
+            
+            // Items For Whenever We are Ready For them.
             //Fire Items
-            itemList.Add(new Item(getItemTemplate("fire"), 0, "Fire Berry I", "attack", "weak", new Vector3(0, 0, 0), 10));
-            itemList.Add(new Item(getItemTemplate("fire"), 1, "Fire Berry II", "attack", "medium", new Vector3(0, 0, 0), 20));
-            itemList.Add(new Item(getItemTemplate("fire"), 2, "Fire Berry III", "attack", "strong", new Vector3(0, 0, 0), 30));
+            itemList.Add(new Item(getItemTemplateByType("fire berry"), 0, "Fire Berry I", "attack", "weak", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplateByType("fire berry"), 1, "Fire Berry II", "attack", "medium", new Vector3(0, 0, 0), 20));
+            itemList.Add(new Item(getItemTemplateByType("fire berry"), 2, "Fire Berry III", "attack", "strong", new Vector3(0, 0, 0), 30));
 
-            itemList.Add(new Item(getItemTemplate("fire"), 3, "Fire Block I", "block", "weak", new Vector3(0, 0, 0), 5));
-            itemList.Add(new Item(getItemTemplate("fire"), 4, "Fire Block II", "block", "medium", new Vector3(0, 0, 0), 10));
-            itemList.Add(new Item(getItemTemplate("fire"), 5, "Fire Block III", "block", "strong", new Vector3(0, 0, 0), 15));
+            itemList.Add(new Item(getItemTemplateByType("blast shield"), 3, "Fire Block I", "block", "weak", new Vector3(0, 0, 0), 5));
+            itemList.Add(new Item(getItemTemplateByType("blast shield"), 4, "Fire Block II", "block", "medium", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplateByType("blast shield"), 5, "Fire Block III", "block", "strong", new Vector3(0, 0, 0), 15));
 
-            itemList.Add(new Item(getItemTemplate("fire"), 6, "Sriracha I", "heal", "weak", new Vector3(0, 0, 0), 8));
-            itemList.Add(new Item(getItemTemplate("fire"), 7, "Sriracha II", "heal", "medium", new Vector3(0, 0, 0), 16));
-            itemList.Add(new Item(getItemTemplate("fire"), 8, "Sriracha III", "heal", "strong", new Vector3(0, 0, 0), 24));
+            itemList.Add(new Item(getItemTemplateByType("sriracha"), 6, "Sriracha I", "heal", "weak", new Vector3(0, 0, 0), 8));
+            itemList.Add(new Item(getItemTemplateByType("sriracha"), 7, "Sriracha II", "heal", "medium", new Vector3(0, 0, 0), 16));
+            itemList.Add(new Item(getItemTemplateByType("sriracha"), 8, "Sriracha III", "heal", "strong", new Vector3(0, 0, 0), 24));
 
             //Water Items
-            itemList.Add(new Item(getItemTemplate("water"), 9, "Coral I", "attack", "weak", new Vector3(0, 0, 0), 10));
-            itemList.Add(new Item(getItemTemplate("water"), 10, "Coral II", "attack", "medium", new Vector3(0, 0, 0), 20));
-            itemList.Add(new Item(getItemTemplate("water"), 11, "Coral III", "attack", "strong", new Vector3(0, 0, 0), 30));
+            itemList.Add(new Item(getItemTemplateByType("coral"), 9, "Coral I", "attack", "weak", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplateByType("coral"), 10, "Coral II", "attack", "medium", new Vector3(0, 0, 0), 20));
+            itemList.Add(new Item(getItemTemplateByType("coral"), 11, "Coral III", "attack", "strong", new Vector3(0, 0, 0), 30));
 
-            itemList.Add(new Item(getItemTemplate("water"), 12, "Seaweed I", "block", "weak", new Vector3(0, 0, 0), 5));
-            itemList.Add(new Item(getItemTemplate("water"), 13, "Seaweed II", "block", "medium", new Vector3(0, 0, 0), 10));
-            itemList.Add(new Item(getItemTemplate("water"), 14, "Seaweed III", "block", "strong", new Vector3(0, 0, 0), 15));
+            itemList.Add(new Item(getItemTemplateByType("seaweed"), 12, "Seaweed I", "block", "weak", new Vector3(0, 0, 0), 5));
+            itemList.Add(new Item(getItemTemplateByType("seaweed"), 13, "Seaweed II", "block", "medium", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplateByType("seaweed"), 14, "Seaweed III", "block", "strong", new Vector3(0, 0, 0), 15));
 
-            itemList.Add(new Item(getItemTemplate("water"), 15, "Zephyrhills I", "heal", "weak", new Vector3(0, 0, 0), 8));
-            itemList.Add(new Item(getItemTemplate("water"), 16, "Zephyrjills II", "heal", "medium", new Vector3(0, 0, 0), 16));
-            itemList.Add(new Item(getItemTemplate("water"), 17, "Zephyrhills III", "heal", "strong", new Vector3(0, 0, 0), 24));
+            itemList.Add(new Item(getItemTemplateByType("zephyrhills"), 15, "Zephyrhills I", "heal", "weak", new Vector3(0, 0, 0), 8));
+            itemList.Add(new Item(getItemTemplateByType("zephyrhills"), 16, "Zephyrhills II", "heal", "medium", new Vector3(0, 0, 0), 16));
+            itemList.Add(new Item(getItemTemplateByType("zephyrhills"), 17, "Zephyrhills III", "heal", "strong", new Vector3(0, 0, 0), 24));
 
             //Ice Items
-            itemList.Add(new Item(getItemTemplate("ice"), 18, "Snowball I", "attack", "weak", new Vector3(0, 0, 0), 10));
-            itemList.Add(new Item(getItemTemplate("ice"), 19, "Snowball II", "attack", "medium", new Vector3(0, 0, 0), 20));
-            itemList.Add(new Item(getItemTemplate("ice"), 20, "Snowball III", "attack", "strong", new Vector3(0, 0, 0), 30));
+            itemList.Add(new Item(getItemTemplateByType("snowball"), 18, "Snowball I", "attack", "weak", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplateByType("snowball"), 19, "Snowball II", "attack", "medium", new Vector3(0, 0, 0), 20));
+            itemList.Add(new Item(getItemTemplateByType("snowball"), 20, "Snowball III", "attack", "strong", new Vector3(0, 0, 0), 30));
 
-            itemList.Add(new Item(getItemTemplate("ice"), 21, "Earflap Hat I", "block", "weak", new Vector3(0, 0, 0), 5));
-            itemList.Add(new Item(getItemTemplate("ice"), 22, "Earflap Hat II", "block", "medium", new Vector3(0, 0, 0), 10));
-            itemList.Add(new Item(getItemTemplate("ice"), 23, "Earflap Hat III", "block", "strong", new Vector3(0, 0, 0), 15));
+            itemList.Add(new Item(getItemTemplateByType("earflap hat"), 21, "Earflap Hat I", "block", "weak", new Vector3(0, 0, 0), 5));
+            itemList.Add(new Item(getItemTemplateByType("earflap hat"), 22, "Earflap Hat II", "block", "medium", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplateByType("earflap hat"), 23, "Earflap Hat III", "block", "strong", new Vector3(0, 0, 0), 15));
 
-            itemList.Add(new Item(getItemTemplate("ice"), 24, "Hot Cocoa I", "heal", "weak", new Vector3(0, 0, 0), 8));
-            itemList.Add(new Item(getItemTemplate("ice"), 25, "Hot Cocoa II", "heal", "medium", new Vector3(0, 0, 0), 16));
-            itemList.Add(new Item(getItemTemplate("ice"), 26, "Hot Cocoa III", "heal", "strong", new Vector3(0, 0, 0), 24));
+            itemList.Add(new Item(getItemTemplateByType("hot cocoa"), 24, "Hot Cocoa I", "heal", "weak", new Vector3(0, 0, 0), 8));
+            itemList.Add(new Item(getItemTemplateByType("hot cocoa"), 25, "Hot Cocoa II", "heal", "medium", new Vector3(0, 0, 0), 16));
+            itemList.Add(new Item(getItemTemplateByType("hot cocoa"), 26, "Hot Cocoa III", "heal", "strong", new Vector3(0, 0, 0), 24));
 
             //Earth Items
-            itemList.Add(new Item(getItemTemplate("earth"), 27, "Fossil I", "attack", "weak", new Vector3(0, 0, 0), 10));
-            itemList.Add(new Item(getItemTemplate("earth"), 28, "Fossil II", "attack", "medium", new Vector3(0, 0, 0), 20));
-            itemList.Add(new Item(getItemTemplate("earth"), 29, "Fossil III", "attack", "strong", new Vector3(0, 0, 0), 30));
+            itemList.Add(new Item(getItemTemplateByType("fossil"), 27, "Fossil I", "attack", "weak", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplateByType("fossil"), 28, "Fossil II", "attack", "medium", new Vector3(0, 0, 0), 20));
+            itemList.Add(new Item(getItemTemplateByType("fossil"), 29, "Fossil III", "attack", "strong", new Vector3(0, 0, 0), 30));
 
-            itemList.Add(new Item(getItemTemplate("earth"), 30, "Earth Block I", "block", "weak", new Vector3(0, 0, 0), 5));
-            itemList.Add(new Item(getItemTemplate("earth"), 31, "Earth Block II", "block", "medium", new Vector3(0, 0, 0), 10));
-            itemList.Add(new Item(getItemTemplate("earth"), 32, "Earth Block III", "block", "strong", new Vector3(0, 0, 0), 15));
+            itemList.Add(new Item(getItemTemplateByType("brick"), 30, "Earth Block I", "block", "weak", new Vector3(0, 0, 0), 5));
+            itemList.Add(new Item(getItemTemplateByType("brick"), 31, "Earth Block II", "block", "medium", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplateByType("brick"), 32, "Earth Block III", "block", "strong", new Vector3(0, 0, 0), 15));
 
-            itemList.Add(new Item(getItemTemplate("water"), 33, "Rock Candy I", "heal", "weak", new Vector3(0, 0, 0), 8));
-            itemList.Add(new Item(getItemTemplate("water"), 34, "Rock Candy II", "heal", "medium", new Vector3(0, 0, 0), 16));
-            itemList.Add(new Item(getItemTemplate("water"), 35, "Rack Candy III", "heal", "strong", new Vector3(0, 0, 0), 24));
+            itemList.Add(new Item(getItemTemplateByType("rock candy"), 33, "Rock Candy I", "heal", "weak", new Vector3(0, 0, 0), 8));
+            itemList.Add(new Item(getItemTemplateByType("rock candy"), 34, "Rock Candy II", "heal", "medium", new Vector3(0, 0, 0), 16));
+            itemList.Add(new Item(getItemTemplateByType("rock candy"), 35, "Rack Candy III", "heal", "strong", new Vector3(0, 0, 0), 24));
 
             //Plant Items
-            itemList.Add(new Item(getItemTemplate("plant"), 36, "Nettles I", "attack", "weak", new Vector3(0, 0, 0), 10));
-            itemList.Add(new Item(getItemTemplate("plant"), 37, "Nettles II", "attack", "medium", new Vector3(0, 0, 0), 20));
-            itemList.Add(new Item(getItemTemplate("plant"), 38, "Nettles III", "attack", "strong", new Vector3(0, 0, 0), 30));
+            itemList.Add(new Item(getItemTemplateByType("nettles"), 36, "Nettles I", "attack", "weak", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplateByType("nettles"), 37, "Nettles II", "attack", "medium", new Vector3(0, 0, 0), 20));
+            itemList.Add(new Item(getItemTemplateByType("nettles"), 38, "Nettles III", "attack", "strong", new Vector3(0, 0, 0), 30));
 
-            itemList.Add(new Item(getItemTemplate("plant"), 39, "Heartwood I", "block", "weak", new Vector3(0, 0, 0), 5));
-            itemList.Add(new Item(getItemTemplate("plant"), 40, "Heartwood II", "block", "medium", new Vector3(0, 0, 0), 10));
-            itemList.Add(new Item(getItemTemplate("plant"), 41, "Heartwood III", "block", "strong", new Vector3(0, 0, 0), 15));
+            itemList.Add(new Item(getItemTemplateByType("heartwood"), 39, "Heartwood I", "block", "weak", new Vector3(0, 0, 0), 5));
+            itemList.Add(new Item(getItemTemplateByType("heartwood"), 40, "Heartwood II", "block", "medium", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplateByType("heartwood"), 41, "Heartwood III", "block", "strong", new Vector3(0, 0, 0), 15));
 
-            itemList.Add(new Item(getItemTemplate("plant"), 42, "Spring Sprig I", "heal", "weak", new Vector3(0, 0, 0), 8));
-            itemList.Add(new Item(getItemTemplate("plant"), 43, "Spring Sprig II", "heal", "medium", new Vector3(0, 0, 0), 16));
-            itemList.Add(new Item(getItemTemplate("plant"), 44, "Spring Sprig III", "heal", "strong", new Vector3(0, 0, 0), 24));
+            itemList.Add(new Item(getItemTemplateByType("spring sprig"), 42, "Spring Sprig I", "heal", "weak", new Vector3(0, 0, 0), 8));
+            itemList.Add(new Item(getItemTemplateByType("spring sprig"), 43, "Spring Sprig II", "heal", "medium", new Vector3(0, 0, 0), 16));
+            itemList.Add(new Item(getItemTemplateByType("spring sprig"), 44, "Spring Sprig III", "heal", "strong", new Vector3(0, 0, 0), 24));
 
+
+            /*
+            itemList.Add(new Item(getItemTemplateByType("coral"), 0, "Coral III", "attack", "medium", new Vector3(0, 0, 0), 30));
+            itemList.Add(new Item(getItemTemplateByType("nettles"), 1, "Nettles III", "attack", "strong", new Vector3(0, 0, 0), 30));
+            itemList.Add(new Item(getItemTemplateByType("fire berry"), 2, "Fire Berry III", "attack", "strong", new Vector3(0, 0, 0), 30));
+            itemList.Add(new Item(getItemTemplateByType("snowball"), 3, "Snowball III", "attack", "strong", new Vector3(0, 0, 0), 30));
+            itemList.Add(new Item(getItemTemplateByType("fossil"), 4, "Fossil III", "attack", "strong", new Vector3(0, 0, 0), 30));
             */
-
-            itemList.Add(new Item(getItemTemplate("water"), 0, "Blue Potion", "attack", "strong", new Vector3(0, 0, 0), 30));
-            itemList.Add(new Item(getItemTemplate("plant"), 1, "Green Potion", "attack", "strong", new Vector3(0, 0, 0), 30));
-            itemList.Add(new Item(getItemTemplate("fire"), 2, "Red Potion", "attack", "strong", new Vector3(0, 0, 0), 30));
-            itemList.Add(new Item(getItemTemplate("ice"), 3, "Violet Potion", "attack", "strong", new Vector3(0, 0, 0), 30));
-            itemList.Add(new Item(getItemTemplate("earth"), 4, "Yellow Potion", "attack", "strong", new Vector3(0, 0, 0), 30));
+            
             //Create items.
             itemPositions = GameObject.Find("Main Camera").GetComponent<DungeonGenerator>().itemArray;
             itemInstances.Clear();
@@ -345,7 +366,7 @@ public static class Database
                 int itemDecider = rand.Next(0, itemList.Count);
                 Item itemToAdd = itemList[itemDecider];
 
-                Item realItem = new Item(getItemTemplate(itemToAdd.element), counter, itemToAdd.name, itemToAdd.type, itemToAdd.strength, itemToAdd.position, itemToAdd.value);
+                Item realItem = new Item(getItemTemplateByType(itemToAdd.itemType), counter, itemToAdd.name, itemToAdd.type, itemToAdd.strength, itemToAdd.position, itemToAdd.value);
 
                 realItem.position = pos;
                 realItem.id = counter;
@@ -353,6 +374,8 @@ public static class Database
                 itemInstances.Add(realItem);
                 counter++;
             }
+
+            Debug.Log("Item Instances: " + itemInstances.Count);
         }
 
         // function to spawn all items
@@ -385,11 +408,11 @@ public static class Database
     // if something doesnt make sense look at the items part above, its more commented
     public static List<MagicElement> enemyTemplates = new List<MagicElement>()
     {
-        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "water", "Meshes/Monsters/Slime/slime_monster_mesh", "Meshes/Monsters/Slime/Water Texture/Slime Water", "Sprites/Enemies/Water Slime"),
-        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "earth", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Earth Texture/Spider Earth", "Sprites/Enemies/Earth Spider"),
-        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "fire", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Fire Texture/Spider Fire", "Sprites/Enemies/Fire Spider"),
-        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "plant", "Meshes/Monsters/Slime/slime_monster_mesh", "Meshes/Monsters/Slime/Plant Texture/Slime Plant", "Sprites/Enemies/Plant Slime"),
-        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 12} }, "ice", "Meshes/Monsters/Rocky/rocky_monster_mesh", "Meshes/Monsters/Rocky/Ice/Rocky_Ice", "Sprites/Enemies/Ice Golem")
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "water", "irrelevant", "Meshes/Monsters/Slime/slime_monster_mesh", "Meshes/Monsters/Slime/Water Texture/Slime Water", "Sprites/Enemies/Water Slime"),
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "earth", "irrelevant", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Earth Texture/Spider Earth", "Sprites/Enemies/Earth Spider"),
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "fire", "irrelevant", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Fire Texture/Spider Fire", "Sprites/Enemies/Fire Spider"),
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "plant", "irrelevant", "Meshes/Monsters/Slime/slime_monster_mesh", "Meshes/Monsters/Slime/Plant Texture/Slime Plant", "Sprites/Enemies/Plant Slime"),
+        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 12} }, "ice", "irrelevant", "Meshes/Monsters/Rocky/rocky_monster_mesh", "Meshes/Monsters/Rocky/Ice/Rocky_Ice", "Sprites/Enemies/Ice Golem")
     };
     public static MagicElement getEnemyTemplate(string element)
     {

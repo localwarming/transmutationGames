@@ -2477,6 +2477,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c707ff6016b7984283e22f1579e6836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickupText: 
+  myGUISkin: {fileID: 11400000, guid: 78760048504bf254980071d80d90f5fc, type: 2}
 --- !u!1 &987174737
 GameObject:
   m_ObjectHideFlags: 0
@@ -4613,6 +4615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60793cede48c80e48803040a2b94bee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyDefeated: 0
 --- !u!1 &1863162397
 GameObject:
   m_ObjectHideFlags: 0
