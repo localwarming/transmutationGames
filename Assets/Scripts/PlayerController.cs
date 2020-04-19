@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviour
                 // get input
                 float horizontal = Input.GetAxisRaw("Horizontal");
                 float vertical = Input.GetAxisRaw("Vertical");
+
                 horizontal = vertical == 0 ? horizontal : 0; // if theres movement in zDir (vert) then only move in that direction (only move in one dir at a time)
 
                 #region CheckRotation
@@ -158,6 +159,8 @@ public class PlayerController : MonoBehaviour
     }
 
     }
+
+
 
 	void OnCollisionEnter(Collision collision)
 	{
