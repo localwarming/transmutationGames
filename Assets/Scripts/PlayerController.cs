@@ -14,6 +14,18 @@ public class PlayerController : MonoBehaviour
     public Fighter currentEnemy;
     public int health = 100;
 
+    //Used to store dungeon information
+    public bool dungeonGenerated = false;
+    public int[,] tileArray;
+    public Vector3 ladderPos;
+    public bool foundExit = false;
+
+    //Info regarding debt.
+    public int currentMoney = 0;
+    public int currentDebt = 500;
+    public int daysRemaining = 5;
+    public int strikes = 0;
+
     // private vars
     int stepSize = 3;
     float moveSpeed = 10;
@@ -124,6 +136,20 @@ public class PlayerController : MonoBehaviour
                     StartCoroutine(SmoothMovement(transform.position + step)); // co-routine is run in background so that graphics update while smooth moving
                 }*/
             }
+
+            if (GameObject.Find("Main Camera").GetComponent<DungeonGenerator>() != null)
+            {
+                if (Math.Abs(player.transform.position.x - GameObject.Find("Ladder").transform.position.x) < 3 && Math.Abs(player.transform.position.z - GameObject.Find("Ladder").transform.position.z) < 3)
+                {
+                    //Player has reached the goal.
+                    //Give some sort of message and then a reward (Current reward is $150).
+                    foundExit = true;
+                    currentMoney = currentMoney + 150;
+                    transform.position = new Vector3(transform.position.x, transform.position.y + 500, transform.position.z);
+                    SceneManager.LoadScene("ShopScreen");
+                }
+            }
+
         }
 
     //A little something to quit the game
@@ -141,6 +167,7 @@ public class PlayerController : MonoBehaviour
             Destroy(collision.gameObject);          // delete the pickup from the scene
             inventory.Add(item);                    // add item to persistent inventory
             Database.itemInstances.Remove(item);    // delete item istance
+            GameObject.Find("Main Camera").GetComponent<DungeonGUI>().pickupText = "You Picked Up: " + item.name + "!";
         }
         else if (collision.gameObject.tag == "Enemy")
         {
@@ -162,7 +189,7 @@ public class PlayerController : MonoBehaviour
     public void exitCombat()
     {
         currentEnemy = null;
-        SceneManager.LoadScene(sceneName: "Dungeon");
+        SceneManager.LoadScene(sceneName: "Dungeon With Generator");
         inCombat = false;
     }
 

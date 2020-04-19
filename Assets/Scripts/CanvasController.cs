@@ -23,6 +23,9 @@ public class CanvasController : MonoBehaviour
     Text readerTextCaption;
     Text effectCaption;
 
+    //Used for popup Window.
+    public bool enemyDefeated = false;
+
     void Start()
     {
         // fill slots with players items
@@ -169,8 +172,11 @@ public class CanvasController : MonoBehaviour
             }
             else if (PlayerController.player.currentEnemy.health < 1)
             {
+                enemyDefeated = true;
+                /*
                 Database.enemyInstances.Remove(PlayerController.player.currentEnemy);
                 backToDungeon();
+                */
             }
         }
         else
