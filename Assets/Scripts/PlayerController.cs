@@ -128,14 +128,14 @@ public class PlayerController : MonoBehaviour
                     transform.Rotate(0, -1 * transform.rotation.eulerAngles.y, 0, Space.World);
 
                 // check for walls then move
-               /* Vector3 step = new Vector3(horizontal * stepSize, 0, vertical * stepSize);
+                Vector3 step = new Vector3(horizontal * stepSize, 0, vertical * stepSize);
                 Ray ray = new Ray(transform.position, step);
                 RaycastHit hit;
                 if (!Physics.Raycast(ray, out hit, stepSize, walls)) // if theres no collision (besides walkable areas) and not moving already, smoothly move
                 {
                     lastPosition = transform.position;
                     StartCoroutine(SmoothMovement(transform.position + step)); // co-routine is run in background so that graphics update while smooth moving
-                }*/
+                }
             }
 
             if (GameObject.Find("Main Camera").GetComponent<DungeonGenerator>() != null)
@@ -185,10 +185,10 @@ public class PlayerController : MonoBehaviour
     public void enterCombat(string enemyName)
     {
         inCombat = true;
-        //SceneManager.LoadScene(sceneName: "Combat"); // change scenes using built in methods
-        GameObject camera = Camera.main.gameObject;
-        Scene scene = SceneManager.GetSceneByName("Combat");
-        camera.GetComponent<SceneTransition>().Transition(scene, (int)UnityEngine.Random.Range(1.0f, 4.0f));
+        SceneManager.LoadScene(sceneName: "Combat"); // change scenes using built in methods
+        //GameObject camera = Camera.main.gameObject;
+        //Scene scene = SceneManager.GetSceneByName("Combat");
+        //camera.GetComponent<SceneTransition>().Transition(scene, (int)UnityEngine.Random.Range(1.0f, 4.0f));
         currentEnemy = Database.getEnemyInstance(enemyName);
     }
 

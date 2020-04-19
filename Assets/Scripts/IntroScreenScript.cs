@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenuController : MonoBehaviour
+public class IntroScreenScript : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -17,15 +17,8 @@ public class MainMenuController : MonoBehaviour
         
     }
 
-    //Exits the game.
-    public void Exit()
+    public void PlayButton()
     {
-        Application.Quit();
-    }
-
-    //Starts the shop scene.
-    public void StartButton()
-    {
-        SceneManager.LoadScene("Introduction");
+        SceneManager.LoadScene("ShopScreen");
     }
 }

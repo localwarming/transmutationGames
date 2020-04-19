@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ShopScreen.unity
     guid: 07ab3c0bc618faa4bb74a21f326112a1
+  - enabled: 1
+    path: Assets/Scenes/Introduction.unity
+    guid: 6d477333301a5f040b8a503bcdf0200a
   m_configObjects: {}
