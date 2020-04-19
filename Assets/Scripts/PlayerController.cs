@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     Vector3 lastPosition;
     LayerMask walls;
     bool inCombat = false;
+     Transform childRig;
 
     // create singleton instance of PlayerController class
     void Awake()
@@ -60,6 +61,8 @@ public class PlayerController : MonoBehaviour
         // get components from game
         walls = LayerMask.GetMask("Walls");
         Physics.IgnoreLayerCollision(9, 10);
+
+        childRig = transform.Find("Bip001");
     }
 
     void Update()
@@ -73,25 +76,53 @@ public class PlayerController : MonoBehaviour
                 float vertical = Input.GetAxisRaw("Vertical");
                 horizontal = vertical == 0 ? horizontal : 0; // if theres movement in zDir (vert) then only move in that direction (only move in one dir at a time)
 
+                #region CheckRotation
+                if (SceneManager.GetActiveScene().name == "Dungeon With Generator" || SceneManager.GetActiveScene().name == "Dungeon With Generator 1")
+                {
+                    float cameray = Camera.main.transform.eulerAngles.y;
+                    if (cameray > 46 && cameray < 135)
+                    {
+                        horizontal = (int)Input.GetAxisRaw("Vertical");
+                        vertical = -(int)Input.GetAxisRaw("Horizontal");
+                    }
+                    else if (cameray > 136 && cameray < 225)
+                    {
+                        horizontal = -(int)Input.GetAxisRaw("Horizontal");
+                        vertical = -(int)Input.GetAxisRaw("Vertical");
+                    }
+                    else if (cameray > 226 && cameray < 315)
+                    {
+                        horizontal = -(int)Input.GetAxisRaw("Vertical");
+                        vertical = (int)Input.GetAxisRaw("Horizontal");
+                    }
+                    else
+                    {
+                        horizontal = (int)Input.GetAxisRaw("Horizontal");
+                        vertical = (int)Input.GetAxisRaw("Vertical");
+                    }
+                }
+
+                #endregion
+
                 // set player orientation
                 if (horizontal < 0)
-                    transform.Rotate(0, -90 - transform.rotation.eulerAngles.y, 0);
+                    transform.Rotate(0, -90 - transform.rotation.eulerAngles.y, 0, Space.World);
                 if (horizontal > 0)
-                    transform.Rotate(0, 90 - transform.rotation.eulerAngles.y, 0);
+                    transform.Rotate(0, 90 - transform.rotation.eulerAngles.y, 0, Space.World);
                 if (vertical < 0)
-                    transform.Rotate(0, 180 - transform.rotation.eulerAngles.y, 0);
+                    transform.Rotate(0, 180 - transform.rotation.eulerAngles.y, 0, Space.World);
                 if (vertical > 0)
-                    transform.Rotate(0, -1 * transform.rotation.eulerAngles.y, 0);
+                    transform.Rotate(0, -1 * transform.rotation.eulerAngles.y, 0, Space.World);
 
                 // check for walls then move
-                Vector3 step = new Vector3(horizontal * stepSize, 0, vertical * stepSize);
+               /* Vector3 step = new Vector3(horizontal * stepSize, 0, vertical * stepSize);
                 Ray ray = new Ray(transform.position, step);
                 RaycastHit hit;
                 if (!Physics.Raycast(ray, out hit, stepSize, walls)) // if theres no collision (besides walkable areas) and not moving already, smoothly move
                 {
                     lastPosition = transform.position;
                     StartCoroutine(SmoothMovement(transform.position + step)); // co-routine is run in background so that graphics update while smooth moving
-                }
+                }*/
             }
         }
 
@@ -121,7 +152,10 @@ public class PlayerController : MonoBehaviour
     public void enterCombat(string enemyName)
     {
         inCombat = true;
-        SceneManager.LoadScene(sceneName: "Combat"); // change scenes using built in methods
+        //SceneManager.LoadScene(sceneName: "Combat"); // change scenes using built in methods
+        GameObject camera = Camera.main.gameObject;
+        Scene scene = SceneManager.GetSceneByName("Combat");
+        camera.GetComponent<SceneTransition>().Transition(scene, (int)UnityEngine.Random.Range(1.0f, 4.0f));
         currentEnemy = Database.getEnemyInstance(enemyName);
     }
 

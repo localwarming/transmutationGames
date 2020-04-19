@@ -246,6 +246,9 @@ public class DungeonGenerator : MonoBehaviour
 
         //Changing other objects to coincide with the generated dungeon.
         GameObject player = GameObject.Find("Player");
+        if (player.transform.parent != null)
+            player = player.transform.parent.gameObject;
+
         player.transform.position = new Vector3(3 * startTileRow, 0, 3* startTileCol);
 
         GameObject arch = GameObject.Find("Archway");

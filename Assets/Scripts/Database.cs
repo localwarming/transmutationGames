@@ -333,7 +333,7 @@ public static class Database
         enemyInstances.Add(new Fighter(getEnemyTemplate("plant"), 1, 100, "Plant Slime", "medium", enemyPositions[1]));
         enemyInstances.Add(new Fighter(getEnemyTemplate("fire"), 2, 100, "Fire Spider", "medium", enemyPositions[2]));
         enemyInstances.Add(new Fighter(getEnemyTemplate("ice"), 2, 100, "Ice Golem", "medium", enemyPositions[3]));
-        enemyInstances.Add(new Fighter(getEnemyTemplate("earth"), 2, 100, "Earth Spider", "medium", enemyPositions[4]));
+        //enemyInstances.Add(new Fighter(getEnemyTemplate("earth"), 2, 100, "Earth Spider", "medium", enemyPositions[4]));
 
         // spawns enemies
         foreach (var enemy in enemyInstances)
@@ -343,7 +343,8 @@ public static class Database
             enemyObj.AddComponent<BoxCollider>();
             enemyObj.AddComponent<MeshRenderer>();
             enemyObj.AddComponent<MeshFilter>();
-            enemyObj.AddComponent<EnemyController>();
+            //enemyObj.AddComponent<EnemyController>();
+            enemyObj.AddComponent<EnemyMovement>();
             enemyObj.transform.localScale = new Vector3(.01F, .01F, .01F);
             enemyObj.GetComponent<Rigidbody>().useGravity = false;
             enemyObj.GetComponent<Rigidbody>().isKinematic = false;
