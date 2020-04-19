@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
                     //Give some sort of message and then a reward (Current reward is $150).
                     foundExit = true;
                     currentMoney = currentMoney + 150;
-                    transform.position = new Vector3(transform.position.x + 500, transform.position.y + 500, transform.position.z + 500);
+                    //player.transform.position = new Vector3(player.transform.position.x + 500, player.transform.position.y + 500, player.transform.position.z + 500);
                     GameObject.Find("Player").GetComponent<PlayerController>().dungeonGenerated = false;
                     GameObject.Find("Player").GetComponent<PlayerController>().tileArray = null;
                     SceneManager.LoadScene("ShopScreen");

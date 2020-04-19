@@ -17,6 +17,7 @@ public class SceneTransition : MonoBehaviour
         set { _cutoff = value; }
     }
 
+    /*
     public void Transition(Scene scene, int transitionType)
     {
         _noiseTexture = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/Textures/Shaders/Transitions/" + transitionType + ".png", typeof(Texture2D));
@@ -26,7 +27,7 @@ public class SceneTransition : MonoBehaviour
         _material.SetTexture("_TrashTex", _noiseTexture);
         StartCoroutine(LoadAsync(scene));
     }
-
+    */
     IEnumerator LoadAsync(Scene scene)
     {
          //Check here if scenes isn't loading properly
