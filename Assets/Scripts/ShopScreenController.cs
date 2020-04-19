@@ -136,7 +136,8 @@ public class ShopScreenController : MonoBehaviour
     //Saves the game
     public void Save()
     {
-
+        Playthrough.player = GameObject.Find("Player").GetComponent<PlayerController>();
+        SaveLoad.Save();
     }
 
     //Returns to main menu

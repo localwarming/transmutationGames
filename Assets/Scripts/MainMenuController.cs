@@ -28,4 +28,10 @@ public class MainMenuController : MonoBehaviour
     {
         SceneManager.LoadScene("Introduction");
     }
+
+    public void LoadButton()
+    {
+        SaveLoad.Load();
+        SceneManager.LoadScene("ShopScreen");
+    }
 }
