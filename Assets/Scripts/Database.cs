@@ -427,6 +427,9 @@ public static class Database
         new Vector3(10, -1.3F, 11),
         new Vector3(22, -1.3F, 20),
         new Vector3(37, -1.3F, 11),
+        new Vector3(37, -1.3F, 11),
+        new Vector3(37, -1.3F, 11),
+        new Vector3(37, -1.3F, 11),
     };
 
     public static List<Fighter> enemyInstances = new List<Fighter>()

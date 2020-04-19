@@ -114,7 +114,9 @@ public class PlayerController : MonoBehaviour
                     //Give some sort of message and then a reward (Current reward is $150).
                     foundExit = true;
                     currentMoney = currentMoney + 150;
-                    transform.position = new Vector3(transform.position.x, transform.position.y + 500, transform.position.z);
+                    transform.position = new Vector3(transform.position.x + 500, transform.position.y + 500, transform.position.z + 500);
+                    GameObject.Find("Player").GetComponent<PlayerController>().dungeonGenerated = false;
+                    GameObject.Find("Player").GetComponent<PlayerController>().tileArray = null;
                     SceneManager.LoadScene("ShopScreen");
                 }
             }
@@ -137,6 +139,7 @@ public class PlayerController : MonoBehaviour
             inventory.Add(item);                    // add item to persistent inventory
             Database.itemInstances.Remove(item);    // delete item istance
             GameObject.Find("Main Camera").GetComponent<DungeonGUI>().pickupText = "You Picked Up: " + item.name + "!";
+            GameObject.Find("PickUpSound").GetComponent<AudioSource>().PlayOneShot(GameObject.Find("PickUpSound").GetComponent<AudioSource>().clip, 0.7f);
         }
         else if (collision.gameObject.tag == "Enemy")
         {

@@ -65,6 +65,7 @@ public class DungeonGUI : MonoBehaviour
 
             if (GameObject.Find("Canvas").GetComponent<ShopScreenController>().selling && !GameObject.Find("Player").GetComponent<PlayerController>().foundExit)
             {
+                GameObject.Find("MoneySound").GetComponent<AudioSource>().PlayOneShot(GameObject.Find("MoneySound").GetComponent<AudioSource>().clip, 0.3f);
                 GUI.Box(new Rect((Screen.width / 2) - 100, (Screen.height / 2) - 100, 200, 200), "All Items Sold! \n You Earned: $" + GameObject.Find("Canvas").GetComponent<ShopScreenController>().moneyEarned);
                 if (GUI.Button(new Rect((Screen.width / 2) + 50, (Screen.height / 2) + 50, 50, 50), "Okay"))
                 {
