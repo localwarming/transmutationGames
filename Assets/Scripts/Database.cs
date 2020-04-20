@@ -174,7 +174,7 @@ public static class Database
         new MagicElement(new int[,] {{5, 8}, {15, 18}, {30, 38}}, "earth", "brick", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Fossil"), //NEED SPRITE
         new MagicElement(new int[,] {{5, 8}, {15, 18}, {30, 38}}, "earth", "rock candy", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Fossil"), //NEED SPRITE
         new MagicElement(new int[,] {{3, 10}, {12, 20}, {28, 45}}, "fire", "fire berry", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Fireberry"),
-        new MagicElement(new int[,] {{3, 10}, {12, 20}, {28, 45}}, "fire", "blast shield", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Fireberry"), //NEED SPRITE
+        new MagicElement(new int[,] {{3, 10}, {12, 20}, {28, 45}}, "fire", "oven door", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Fireberry"), //NEED SPRITE
         new MagicElement(new int[,] {{3, 10}, {12, 20}, {28, 45}}, "fire", "sriracha", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Sriracha"),
         new MagicElement(new int[,] {{8, 15}, {18, 30}, {40, 80}}, "plant", "nettles", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Nettle"),
         new MagicElement(new int[,] {{8, 15}, {18, 30}, {40, 80}}, "plant", "heartwood", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Heartwood"),
@@ -280,9 +280,9 @@ public static class Database
             itemList.Add(new Item(getItemTemplateByType("fire berry"), 1, "Fire Berry II", "attack", "medium", new Vector3(0, 0, 0), 20));
             itemList.Add(new Item(getItemTemplateByType("fire berry"), 2, "Fire Berry III", "attack", "strong", new Vector3(0, 0, 0), 30));
 
-            itemList.Add(new Item(getItemTemplateByType("blast shield"), 3, "Fire Block I", "block", "weak", new Vector3(0, 0, 0), 5));
-            itemList.Add(new Item(getItemTemplateByType("blast shield"), 4, "Fire Block II", "block", "medium", new Vector3(0, 0, 0), 10));
-            itemList.Add(new Item(getItemTemplateByType("blast shield"), 5, "Fire Block III", "block", "strong", new Vector3(0, 0, 0), 15));
+            itemList.Add(new Item(getItemTemplateByType("oven door"), 3, "Fire Block I", "block", "weak", new Vector3(0, 0, 0), 5));
+            itemList.Add(new Item(getItemTemplateByType("oven door"), 4, "Fire Block II", "block", "medium", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplateByType("oven door"), 5, "Fire Block III", "block", "strong", new Vector3(0, 0, 0), 15));
 
             itemList.Add(new Item(getItemTemplateByType("sriracha"), 6, "Sriracha I", "heal", "weak", new Vector3(0, 0, 0), 8));
             itemList.Add(new Item(getItemTemplateByType("sriracha"), 7, "Sriracha II", "heal", "medium", new Vector3(0, 0, 0), 16));
