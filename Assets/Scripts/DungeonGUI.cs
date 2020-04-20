@@ -8,6 +8,10 @@ public class DungeonGUI : MonoBehaviour
     public string pickupText = "";
     public GUISkin myGUISkin;
     System.Random rand = new System.Random();
+    bool materialInfo = true;
+    bool spellInfo = true;
+    bool elementInfo = true;
+    bool elementChart = true;
     private void OnGUI()
     {
         GUI.skin = myGUISkin;
@@ -30,6 +34,30 @@ public class DungeonGUI : MonoBehaviour
 
         if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Combat"))
         {
+            /*
+            if(GUI.Button(new Rect(Screen.width - 290, Screen.height - 50, 50, 50), "Material Info"))
+            {
+                Debug.Log("Working");
+                GameObject.Find("/Canvas/Notes_Materials").SetActive(materialInfo);
+                materialInfo = !materialInfo;
+            }
+            if (GUI.Button(new Rect(Screen.width - 230, Screen.height - 50, 50, 50), "Spell Info"))
+            {
+                GameObject.Find("/Canvas/Notes_Spells").SetActive(spellInfo);
+                spellInfo = !spellInfo;
+            }
+            if (GUI.Button(new Rect(Screen.width - 170, Screen.height - 50, 50, 50), "Element Info"))
+            {
+                GameObject.Find("/Canvas/Notes_Elements").SetActive(elementInfo);
+                elementInfo = !elementInfo;
+            }
+            if (GUI.Button(new Rect(Screen.width - 110, Screen.height - 50, 50, 50), "Element Chart"))
+            {
+                GameObject.Find("/Canvas/Notes_Element_Chart").SetActive(elementChart);
+                elementChart = !elementChart;
+            }
+            */
+            
             if (GameObject.Find("Canvas").GetComponent<CanvasController>().enemyDefeated)
             {
                 //GUI.color = new Color(1.0f, 1.0f, 1.0f, 1.0f); //0.5 is half opacity

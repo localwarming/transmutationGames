@@ -87,13 +87,14 @@ public class Fighter : MagicElement
     public int health;
 
     // assign all instance specific vars using base template
-    public Fighter(MagicElement _base, int _id, int _health, string _name, string _strength, Vector3 _position) : base(_base)
+    public Fighter(MagicElement _base, int _id, int _health, string _name, string _type, string _strength, Vector3 _position) : base(_base)
     {
         id = _id;
         health = _health;
         name = _name;
         strength = _strength;
         position = _position;
+        itemType = _type;
     }
 
     // get random strength from within bounds specified in strength array for instance strength
@@ -157,6 +158,7 @@ public static class Database
     #region item database
 
     public static List<Item> itemList;
+    public static System.Random rand;
     // item stuff
     public static List<MagicElement> itemTemplates = new List<MagicElement>()               
     {   
@@ -408,15 +410,36 @@ public static class Database
     // if something doesnt make sense look at the items part above, its more commented
     public static List<MagicElement> enemyTemplates = new List<MagicElement>()
     {
-        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "water", "irrelevant", "Meshes/Monsters/Slime/slime_monster_mesh", "Meshes/Monsters/Slime/Water Texture/Slime Water", "Sprites/Enemies/Water Slime"),
-        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "earth", "irrelevant", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Earth Texture/Spider Earth", "Sprites/Enemies/Earth Spider"),
-        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "fire", "irrelevant", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Fire Texture/Spider Fire", "Sprites/Enemies/Fire Spider"),
-        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "plant", "irrelevant", "Meshes/Monsters/Slime/slime_monster_mesh", "Meshes/Monsters/Slime/Plant Texture/Slime Plant", "Sprites/Enemies/Plant Slime"),
-        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 12} }, "ice", "irrelevant", "Meshes/Monsters/Rocky/rocky_monster_mesh", "Meshes/Monsters/Rocky/Ice/Rocky_Ice", "Sprites/Enemies/Ice Golem")
+        //Slimes
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "water", "water slime", "Meshes/Monsters/Slime/slime_monster_mesh", "Meshes/Monsters/Slime/Water Texture/Slime Water", "Sprites/Enemies/Water Slime 1"),
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "plant", "plant slime", "Meshes/Monsters/Slime/slime_monster_mesh", "Meshes/Monsters/Slime/Plant Texture/Slime Plant", "Sprites/Enemies/Plant Slime 1"),
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "ice", "ice slime", "Meshes/Monsters/Slime/slime_monster_mesh", "Meshes/Monsters/Slime/Ice Texture/Slime Ice", "Sprites/Enemies/ice slime"),
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "fire", "fire slime", "Meshes/Monsters/Slime/slime_monster_mesh", "Meshes/Monsters/Slime/Fire Texture/Slime Fire", "Sprites/Enemies/fire slime"),
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "earth", "earth slime", "Meshes/Monsters/Slime/slime_monster_mesh", "Meshes/Monsters/Slime/Earth Texture/Slime Earth", "Sprites/Enemies/earth slime"),
+
+        //Spiders
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "earth", "earth spider", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Earth Texture/Spider Earth", "Sprites/Enemies/Spider_Earth_1"),
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "fire", "fire spider", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Fire Texture/Spider Fire", "Sprites/Enemies/Spider_Fire_1"),
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "water", "water spider", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Water Texture/Spider Water", "Sprites/Enemies/Spide_Water_1"), 
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "ice", "ice spider", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Ice Texture/Spider Ice", "Sprites/Enemies/Spider_Ice_1"),
+        new MagicElement(new int[,] { { 5, 5 }, { 10, 10 }, { 20, 20} }, "plant", "plant spider", "Meshes/Monsters/Spider/spider_monster_mesh", "Meshes/Monsters/Spider/Plant Texture/Spider Plant", "Sprites/Enemies/Spider_Plant_1"),
+
+        //Golems
+        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 20} }, "ice", "ice golem", "Meshes/Monsters/Rocky/rocky_monster_mesh", "Meshes/Monsters/Rocky/Ice/Rocky_Ice", "Sprites/Enemies/Golem_Ice_1"),
+        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 20} }, "fire", "fire golem", "Meshes/Monsters/Rocky/rocky_monster_mesh", "Meshes/Monsters/Rocky/Fire Texture/Rocky_Fire", "Sprites/Enemies/Golem_Fire_1"),
+        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 20} }, "water", "water golem", "Meshes/Monsters/Rocky/rocky_monster_mesh", "Meshes/Monsters/Rocky/Water Texture/Rocky_Water", "Sprites/Enemies/Golem_Water_1"),
+        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 20} }, "plant", "plant golem", "Meshes/Monsters/Rocky/rocky_monster_mesh", "Meshes/Monsters/Rocky/Plant Texture/Rocky_Plant", "Sprites/Enemies/Golem_Plant_1"),
+        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 20} }, "earth", "earth golem", "Meshes/Monsters/Rocky/rocky_monster_mesh", "Meshes/Monsters/Rocky/Earth Texture/Rocky_Earth", "Sprites/Enemies/Golem_Earth_1"),
+
+        //Bubs
     };
     public static MagicElement getEnemyTemplate(string element)
     {
         return enemyTemplates.Find(Fighter => Fighter.element == element);
+    }
+    public static MagicElement getEnemyTemplateByType(string type)
+    {
+        return enemyTemplates.Find(Fighter => Fighter.itemType == type);
     }
 
     private static GameObject camera = GameObject.Find("Main Camera");
@@ -459,11 +482,33 @@ public static class Database
         {
             //Items list.
             List<Fighter> monsterList = new List<Fighter>();
-            monsterList.Add(new Fighter(getEnemyTemplate("water"), 0, 100, "Water Slime", "weak", enemyPositions[0]));
-            monsterList.Add(new Fighter(getEnemyTemplate("plant"), 1, 100, "Plant Slime", "medium", enemyPositions[1]));
-            monsterList.Add(new Fighter(getEnemyTemplate("fire"), 2, 100, "Fire Spider", "medium", enemyPositions[2]));
-            monsterList.Add(new Fighter(getEnemyTemplate("ice"), 2, 100, "Ice Golem", "medium", enemyPositions[3]));
-            monsterList.Add(new Fighter(getEnemyTemplate("earth"), 2, 100, "Earth Spider", "medium", enemyPositions[4]));
+
+            Debug.Log("Creating Enemy List");
+
+            //Slimes
+            monsterList.Add(new Fighter(getEnemyTemplateByType("water slime"), 0, 20, "Water Slime", "water slime","weak", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplateByType("plant slime"), 1, 20, "Plant Slime", "plant slime", "weak", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplateByType("fire slime"), 2, 20, "Fire Slime", "fire slime", "weak", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplateByType("ice slime"), 3, 20, "Ice Slime", "ice slime", "weak", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplateByType("earth slime"), 4, 20, "Earth Slime", "earth slime", "weak", enemyPositions[0]));
+
+            //Spiders
+            monsterList.Add(new Fighter(getEnemyTemplateByType("fire spider"), 5, 50, "Fire Spider", "fire spider", "medium", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplateByType("earth spider"), 6, 50, "Earth Spider", "earth spider", "medium", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplateByType("water spider"), 7, 50, "Water Spider", "water spider", "medium", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplateByType("ice spider"), 8, 50, "Ice Spider", "ice spider", "medium", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplateByType("plant spider"), 9, 50, "Plant Spider", "plant spider", "medium", enemyPositions[0]));
+
+            //Golems
+            monsterList.Add(new Fighter(getEnemyTemplateByType("ice golem"), 10, 100, "Ice Golem", "ice golem", "strong", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplateByType("fire golem"), 11, 100, "Fire Golem", "fire golem", "strong", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplateByType("water golem"), 12, 100, "Water Golem", "water golem", "strong", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplateByType("earth golem"), 13, 100, "Earth Golem", "earth golem", "strong", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplateByType("plant golem"), 14, 100, "Plant Golem", "plant golem", "strong", enemyPositions[0]));
+
+            //Bubs
+
+            Debug.Log("Through Enemy List");
             //Create items.
             enemyPositions = GameObject.Find("Main Camera").GetComponent<DungeonGenerator>().monsterArray;
             enemyInstances.Clear();
@@ -472,10 +517,11 @@ public static class Database
             int counter = 0;
             foreach (Vector3 pos in GameObject.Find("Main Camera").GetComponent<DungeonGenerator>().monsterArray)
             {
+                Debug.Log("Enemy #: " + counter);
                 int monsterDecider = rand.Next(0, monsterList.Count);
                 Fighter monsterToAdd = monsterList[monsterDecider];
 
-                Fighter realMonster = new Fighter(getEnemyTemplate(monsterToAdd.element), counter, monsterToAdd.health, monsterToAdd.name, monsterToAdd.strength, monsterToAdd.position);
+                Fighter realMonster = new Fighter(getEnemyTemplateByType(monsterToAdd.itemType), counter, monsterToAdd.health, monsterToAdd.name, monsterToAdd.itemType, monsterToAdd.strength, monsterToAdd.position);
 
                 realMonster.position = pos;
                 realMonster.id = counter;
@@ -483,6 +529,8 @@ public static class Database
                 enemyInstances.Add(realMonster);
                 counter++;
             }
+
+            Debug.Log("Monster instances: " + enemyInstances.Count);
         }
         // spawns enemies
         foreach (var enemy in enemyInstances)
