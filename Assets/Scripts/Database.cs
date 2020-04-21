@@ -171,10 +171,10 @@ public static class Database
         new MagicElement(new int[,] {{10, 12}, {20, 25}, {48, 55}}, "water", "seaweed", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Seaweed"),
         new MagicElement(new int[,] {{10, 12}, {20, 25}, {48, 55}}, "water", "zephyrhills", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Zephyrhills"),
         new MagicElement(new int[,] {{5, 8}, {15, 18}, {30, 38}}, "earth", "fossil", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Fossil"),
-        new MagicElement(new int[,] {{5, 8}, {15, 18}, {30, 38}}, "earth", "brick", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Fossil"), //NEED SPRITE
-        new MagicElement(new int[,] {{5, 8}, {15, 18}, {30, 38}}, "earth", "rock candy", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Fossil"), //NEED SPRITE
+        new MagicElement(new int[,] {{5, 8}, {15, 18}, {30, 38}}, "earth", "brick", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/brick"), //NEED SPRITE
+        new MagicElement(new int[,] {{5, 8}, {15, 18}, {30, 38}}, "earth", "rock candy", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/RockCandy"), //NEED SPRITE
         new MagicElement(new int[,] {{3, 10}, {12, 20}, {28, 45}}, "fire", "fire berry", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Fireberry"),
-        new MagicElement(new int[,] {{3, 10}, {12, 20}, {28, 45}}, "fire", "oven door", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Fireberry"), //NEED SPRITE
+        new MagicElement(new int[,] {{3, 10}, {12, 20}, {28, 45}}, "fire", "oven door", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Fireblock"), //NEED SPRITE
         new MagicElement(new int[,] {{3, 10}, {12, 20}, {28, 45}}, "fire", "sriracha", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Sriracha"),
         new MagicElement(new int[,] {{8, 15}, {18, 30}, {40, 80}}, "plant", "nettles", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Nettle"),
         new MagicElement(new int[,] {{8, 15}, {18, 30}, {40, 80}}, "plant", "heartwood", "Meshes/Exclamation Point/exclamation_point_mesh", "Meshes/Exclamation Point/Exclamation Point", "Sprites/Items/Heartwood"),
@@ -280,9 +280,9 @@ public static class Database
             itemList.Add(new Item(getItemTemplateByType("fire berry"), 1, "Fire Berry II", "attack", "medium", new Vector3(0, 0, 0), 20));
             itemList.Add(new Item(getItemTemplateByType("fire berry"), 2, "Fire Berry III", "attack", "strong", new Vector3(0, 0, 0), 30));
 
-            itemList.Add(new Item(getItemTemplateByType("oven door"), 3, "Fire Block I", "block", "weak", new Vector3(0, 0, 0), 5));
-            itemList.Add(new Item(getItemTemplateByType("oven door"), 4, "Fire Block II", "block", "medium", new Vector3(0, 0, 0), 10));
-            itemList.Add(new Item(getItemTemplateByType("oven door"), 5, "Fire Block III", "block", "strong", new Vector3(0, 0, 0), 15));
+            itemList.Add(new Item(getItemTemplateByType("oven door"), 3, "Molten Block I", "block", "weak", new Vector3(0, 0, 0), 5));
+            itemList.Add(new Item(getItemTemplateByType("oven door"), 4, "Molten Block II", "block", "medium", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplateByType("oven door"), 5, "Molten Block III", "block", "strong", new Vector3(0, 0, 0), 15));
 
             itemList.Add(new Item(getItemTemplateByType("sriracha"), 6, "Sriracha I", "heal", "weak", new Vector3(0, 0, 0), 8));
             itemList.Add(new Item(getItemTemplateByType("sriracha"), 7, "Sriracha II", "heal", "medium", new Vector3(0, 0, 0), 16));
@@ -319,9 +319,9 @@ public static class Database
             itemList.Add(new Item(getItemTemplateByType("fossil"), 28, "Fossil II", "attack", "medium", new Vector3(0, 0, 0), 20));
             itemList.Add(new Item(getItemTemplateByType("fossil"), 29, "Fossil III", "attack", "strong", new Vector3(0, 0, 0), 30));
 
-            itemList.Add(new Item(getItemTemplateByType("brick"), 30, "Earth Block I", "block", "weak", new Vector3(0, 0, 0), 5));
-            itemList.Add(new Item(getItemTemplateByType("brick"), 31, "Earth Block II", "block", "medium", new Vector3(0, 0, 0), 10));
-            itemList.Add(new Item(getItemTemplateByType("brick"), 32, "Earth Block III", "block", "strong", new Vector3(0, 0, 0), 15));
+            itemList.Add(new Item(getItemTemplateByType("brick"), 30, "Brick I", "block", "weak", new Vector3(0, 0, 0), 5));
+            itemList.Add(new Item(getItemTemplateByType("brick"), 31, "Brick II", "block", "medium", new Vector3(0, 0, 0), 10));
+            itemList.Add(new Item(getItemTemplateByType("brick"), 32, "Brick III", "block", "strong", new Vector3(0, 0, 0), 15));
 
             itemList.Add(new Item(getItemTemplateByType("rock candy"), 33, "Rock Candy I", "heal", "weak", new Vector3(0, 0, 0), 8));
             itemList.Add(new Item(getItemTemplateByType("rock candy"), 34, "Rock Candy II", "heal", "medium", new Vector3(0, 0, 0), 16));
@@ -432,6 +432,11 @@ public static class Database
         new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 20} }, "earth", "earth golem", "Meshes/Monsters/Rocky/rocky_monster_mesh", "Meshes/Monsters/Rocky/Earth Texture/Rocky_Earth", "Sprites/Enemies/Golem_Earth_1"),
 
         //Bubs
+        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 20} }, "ice", "ice bub", "Meshes/Monsters/Bub/bub_mesh", "Meshes/Monsters/Bub/Ice/Bub Ice", "Sprites/Enemies/Bubs_Ice"),
+        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 20} }, "fire", "fire bub", "Meshes/Monsters/Bub/bub_mesh", "Meshes/Monsters/Bub/Fire/Bub Fire", "Sprites/Enemies/Bubs_Fire"),
+        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 20} }, "water", "water bub", "Meshes/Monsters/Bub/bub_mesh", "Meshes/Monsters/Bub/Water/Bub Water", "Sprites/Enemies/Bubs_Water"),
+        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 20} }, "earth", "earth bub", "Meshes/Monsters/Bub/bub_mesh", "Meshes/Monsters/Bub/Earth/Bub Earth", "Sprites/Enemies/Bubs_Earth"),
+        new MagicElement(new int[,] { { 5, 8 }, { 10, 10 }, { 20, 20} }, "plant", "plant bub", "Meshes/Monsters/Bub/bub_mesh", "Meshes/Monsters/Bub/Plant/Bub Plant", "Sprites/Enemies/Bubs_Plant"),
     };
     public static MagicElement getEnemyTemplate(string element)
     {
@@ -507,6 +512,11 @@ public static class Database
             monsterList.Add(new Fighter(getEnemyTemplateByType("plant golem"), 14, 100, "Plant Golem", "plant golem", "strong", enemyPositions[0]));
 
             //Bubs
+            monsterList.Add(new Fighter(getEnemyTemplateByType("ice bub"), 15, 75, "Ice Bub", "ice bub", "medium", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplateByType("fire bub"), 16, 75, "Fire Bub", "fire bub", "medium", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplateByType("water bub"), 17, 75, "Water Bub", "water bub", "medium", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplateByType("plant bub"), 18, 75, "Plant Bub", "plant bub", "medium", enemyPositions[0]));
+            monsterList.Add(new Fighter(getEnemyTemplateByType("earth bub"), 19, 75, "Earth Bub", "earth bub", "medium", enemyPositions[0]));
 
             Debug.Log("Through Enemy List");
             //Create items.
